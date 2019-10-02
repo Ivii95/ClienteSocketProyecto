@@ -53,7 +53,6 @@ public class ModificarUsu extends javax.swing.JDialog {
         domicilio = new javax.swing.JLabel();
         txtnom_usu = new javax.swing.JTextField();
         txtpass = new javax.swing.JTextField();
-        txtadmin = new javax.swing.JTextField();
         txtcorreo = new javax.swing.JTextField();
         txtnombre = new javax.swing.JTextField();
         txtapellidos = new javax.swing.JTextField();
@@ -67,6 +66,7 @@ public class ModificarUsu extends javax.swing.JDialog {
         txtdomicilio = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
         btnAceptar = new javax.swing.JButton();
+        checkAdmin = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Modificar");
@@ -179,11 +179,6 @@ public class ModificarUsu extends javax.swing.JDialog {
         jPanel2.add(txtpass, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        jPanel2.add(txtadmin, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         jPanel2.add(txtcorreo, gridBagConstraints);
@@ -257,13 +252,19 @@ public class ModificarUsu extends javax.swing.JDialog {
         gridBagConstraints.gridy = 14;
         jPanel2.add(btnAceptar, gridBagConstraints);
 
+        checkAdmin.setText("Admin");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        jPanel2.add(checkAdmin, gridBagConstraints);
+
         jScrollPane2.setViewportView(jPanel2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -289,7 +290,13 @@ public class ModificarUsu extends javax.swing.JDialog {
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         use.setUsuario(txtnom_usu.getText());
         use.setContrasena(txtpass.getText());
-        use.setAdmin(Integer.parseInt(txtadmin.getText()));
+        boolean Admin=false;
+        if(checkAdmin.isSelected()){
+            Admin=true;
+        }else{
+            Admin=false;
+        }
+        use.setAdmin(checkAdmin.isSelected());
         use.setCorreoRecuperacion(txtcorreo.getText());
         use.setNombre(txtnombre.getText());
         use.setApellidos(txtapellidos.getText());
@@ -312,7 +319,11 @@ public class ModificarUsu extends javax.swing.JDialog {
     public void setUsuario(Usuario user){
         txtnom_usu.setText(user.getUsuario());
         txtpass.setText(user.getContrasena());
-        txtadmin.setText(user.getAdmin()+"");
+        if(user.getAdmin()){
+            checkAdmin.setSelected(true);
+        }else{
+            checkAdmin.setSelected(false);
+        }
         txtcorreo.setText(user.getCorreoRecuperacion());
         txtnombre.setText(user.getNombre());
         txtapellidos.setText(user.getApellidos());
@@ -402,6 +413,7 @@ public class ModificarUsu extends javax.swing.JDialog {
     private javax.swing.JLabel apellidos;
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JCheckBox checkAdmin;
     private javax.swing.JLabel ciudad;
     private javax.swing.JLabel comunidad_auto;
     private javax.swing.JLabel correo;
@@ -417,7 +429,6 @@ public class ModificarUsu extends javax.swing.JDialog {
     private javax.swing.JLabel provincia;
     private javax.swing.JLabel sexo;
     private javax.swing.JLabel tlf;
-    private javax.swing.JTextField txtadmin;
     private javax.swing.JTextField txtapellidos;
     private javax.swing.JTextField txtciudad;
     private javax.swing.JTextField txtcomunidad_autonoma;

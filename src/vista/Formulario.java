@@ -560,10 +560,10 @@ public class Formulario extends javax.swing.JDialog {
     private void btnAceptarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseReleased
         // TODO add your handling code here:
         if(check.isSelected()){
-        int admin=0;
+        boolean admin=true;
         btnAceptar.pulse();
         if(checkAdmin.isSelected()){
-            admin=1;
+            admin=false;
         }
         String pass=new String(txtPass.getPassword());
         user=new Usuario(0,
