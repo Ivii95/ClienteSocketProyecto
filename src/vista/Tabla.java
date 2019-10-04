@@ -4,47 +4,32 @@
  * and open the template in the editor.
  */
 package vista;
-import controlador.Controlador;
-import static controlador.Controlador.flujoObjEntrada;
-import static controlador.Controlador.flujoObjSalida;
-import static controlador.Controlador.pass;
-import static controlador.Controlador.usu;
-import static controlador.Controlador.usuario;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+
+
+import controlador.GestionUsuario;
 import modelo.*;
-import vista.*;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import static modelo.Protocolo.BORRAR_USUARIO;
-import static modelo.Protocolo.INSERTAR_USUARIO;
-import static modelo.Protocolo.LISTAR_USUARIOS;
-import static modelo.Protocolo.LOG;
-import static modelo.Protocolo.SALIR;
 
 /**
  *
  * @author prueba
  */
-public class Tabla extends javax.swing.JFrame implements Protocolo{
+public class Tabla extends javax.swing.JFrame implements Protocolo {
 
     /**
      * Creates new form Tabla
      */
     public Tabla(java.awt.Frame parent, boolean modal) {
-        
         initComponents();
-        iniciarOtrosComponentes();
-        ponLaAyuda();
+        setLocationRelativeTo(null);
+        modeloTabla=(DefaultTableModel) tblPrinci.getModel();
+        cargarTodo();
     }
 
     /**
@@ -83,7 +68,7 @@ public class Tabla extends javax.swing.JFrame implements Protocolo{
 
             },
             new String [] {
-                "ID", "Nombre", "Apellidos", "Usuario", "Password", "Telefono"
+                "ID", "Nombre", "Apellidos", "Usuario", "Domicilio", "Telefono"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -96,17 +81,16 @@ public class Tabla extends javax.swing.JFrame implements Protocolo{
         });
         tblPrinci.setGridColor(new java.awt.Color(51, 51, 51));
         tblPrinci.setSelectionForeground(new java.awt.Color(51, 255, 255));
-        tblPrinci.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
-                tblPrinciMouseWheelMoved(evt);
-            }
-        });
-        tblPrinci.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tblPrinciMousePressed(evt);
-            }
-        });
         jScrollPane1.setViewportView(tblPrinci);
+        if (tblPrinci.getColumnModel().getColumnCount() > 0) {
+            tblPrinci.getColumnModel().getColumn(0).setResizable(false);
+            tblPrinci.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tblPrinci.getColumnModel().getColumn(1).setResizable(false);
+            tblPrinci.getColumnModel().getColumn(2).setResizable(false);
+            tblPrinci.getColumnModel().getColumn(3).setResizable(false);
+            tblPrinci.getColumnModel().getColumn(4).setResizable(false);
+            tblPrinci.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 204));
 
@@ -206,49 +190,38 @@ public class Tabla extends javax.swing.JFrame implements Protocolo{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
-        Formulario f=new Formulario(this, true);
-                        f.setVisible(true);
-                        Usuario usu = f.getUsuario();
-        gestionInsertarUsuario(usu);
+        Formulario f = new Formulario(this, true);
+        f.setVisible(true);
+        usu = f.getUsuario();
+        GU.gestionInsertarUsuario(usu);
         agregarFila(usu);
-        
+        cargarTodo();
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        /*ModificarUsu mf=new ModificarUsu(null,true);
-        mf.setUsuario(db.obtenerUsu(recogerIdFila()));
+        ModificarUsu mf=new ModificarUsu(null,true);
+        int idusu=recogerIdFila();
+        Usuario usu=null;
+        for (int i = 0; i < Usuarios.size(); i++) {
+            if(Usuarios.get(i).getId()==idusu){
+                usu=Usuarios.get(i);
+            }
+        }
+        mf.setUsuario(usu);
         mf.setVisible(rootPaneCheckingEnabled);
-        Usuario usu=mf.getUsuario();
-        System.out.println(usu.toString());
-        db.modificarTodo(usu);
-        modeloTabla.removeRow(recogerFila());
-        agregarFila(usu);*/
-
-        
-        
+        usu=mf.getUsuario();
+        GU.gestionActualizarUsuario(usu);
+        borrarTodo();
+        cargarTodo();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        int id=recogerIdFila();
-        gestionBorrarUsuario(id);
+        int id = recogerIdFila();
+        //borrrar de la base de datos.
+        GU.gestionBorrarUsuario(id);
         modeloTabla.removeRow(recogerFila());
-        //recogerFila();
-        
-        
+        cargarTodo();
     }//GEN-LAST:event_btnBorrarActionPerformed
-
-    private void tblPrinciMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPrinciMousePressed
-        // TODO add your handling code here:
-        
-        
-    }//GEN-LAST:event_tblPrinciMousePressed
-
-    private void tblPrinciMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_tblPrinciMouseWheelMoved
-        // TODO add your handling code here:
-        int id=recogerFila();
-        //Usuario usu=C.obtenerUsu(id);
-        //JOptionPane.showMessageDialog(this,usu.toString());
-    }//GEN-LAST:event_tblPrinciMouseWheelMoved
 
     private void InformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InformeActionPerformed
         startReport();
@@ -256,82 +229,59 @@ public class Tabla extends javax.swing.JFrame implements Protocolo{
     /**
      * @param args the command line arguments
      */
-    private void agregarFila(Usuario u){
-        Object[] objeto=new Object[]{
-            u.getId(),
+    private void agregarFila(Usuario u) {
+        modeloTabla.addRow(new Object[]{u.getId(),
             u.getNombre(),
             u.getApellidos(),
             u.getUsuario(),
-            u.getContrasena(),
-            u.getTlf(),
-            /*u.getSexo(),
-            u.getNacimiento(),
-            u.getPais(),
-            u.getCiudad(),
-            u.getDomicilio(),*/
-            };
-        
-        modeloTabla.addRow(objeto);
+            u.getDomicilio(),
+            u.getTlf()});
     }
-    private Usuario recogerFilaEntera(int i){
-        Usuario u=new Usuario();
-        u.setId((int)modeloTabla.getValueAt(i,1));
+
+    private Usuario recogerFilaEntera(int i) {
+        Usuario u = new Usuario();
+        u.setId((int) modeloTabla.getValueAt(i, 1));
         u.setNombre((String) modeloTabla.getValueAt(i, 2));
         u.setApellidos((String) modeloTabla.getValueAt(i, 3));
         u.setUsuario((String) modeloTabla.getValueAt(i, 4));
         u.setContrasena((String) modeloTabla.getValueAt(i, 5));
         u.setTlf((int) modeloTabla.getValueAt(i, 6));
-        
+
         /*u.setCorreoRecuperacion((String) modeloTabla.getValueAt(i, 2));
         u.setSexo((String) modeloTabla.getValueAt(i, 5));
         u.setNacimiento((String) modeloTabla.getValueAt(i, 6));
         u.setPais((String) modeloTabla.getValueAt(i, 7));
         u.setCiudad((String) modeloTabla.getValueAt(i, 8));
         u.setDomicilio((String) modeloTabla.getValueAt(i, 9));*/
-        
         return u;
     }
-    private int recogerIdFila(){
-        
-        int Id=((int)modeloTabla.getValueAt(tblPrinci.getSelectedRow(),0));
-        
-        
+
+    private int recogerIdFila() {
+
+        int Id = ((int) modeloTabla.getValueAt(tblPrinci.getSelectedRow(), 0));
+        return Id;
+    }
+
+    private int recogerFila() {
+        int Id = (int) tblPrinci.getSelectedRow();
         /*u.setCorreoRecuperacion((String) modeloTabla.getValueAt(i, 2));
         u.setSexo((String) modeloTabla.getValueAt(i, 5));
         u.setNacimiento((String) modeloTabla.getValueAt(i, 6));
         u.setPais((String) modeloTabla.getValueAt(i, 7));
         u.setCiudad((String) modeloTabla.getValueAt(i, 8));
         u.setDomicilio((String) modeloTabla.getValueAt(i, 9));*/
-        
         return Id;
     }
-    private int recogerFila(){
-        
-        int Id=(int)tblPrinci.getSelectedRow();
-        
-        
-        /*u.setCorreoRecuperacion((String) modeloTabla.getValueAt(i, 2));
-        u.setSexo((String) modeloTabla.getValueAt(i, 5));
-        u.setNacimiento((String) modeloTabla.getValueAt(i, 6));
-        u.setPais((String) modeloTabla.getValueAt(i, 7));
-        u.setCiudad((String) modeloTabla.getValueAt(i, 8));
-        u.setDomicilio((String) modeloTabla.getValueAt(i, 9));*/
-        
-        return Id;
-    }
-    private void ponLaAyuda() 
-    {
-        try 
-        {
+
+    private void ponLaAyuda() {
+        try {
             // Carga el fichero de ayuda
-            java.io.File fichero = new java.io.File("lib"+File.separator+"help"+java.io.File.separator+"help_set.hs");
+            java.io.File fichero = new java.io.File("lib" + File.separator + "help" + java.io.File.separator + "help_set.hs");
             java.net.URL hsURL = fichero.toURI().toURL();
-            
+
             //ClassLoader cl = Examen20171122.class.getClassLoader();
             //java.net.URL hsURL = HelpSet.findHelpSet(cl,"help\\help_set.hs");
-            
             //HelpSet hs = new HelpSet(null, hsURL);
-
             // Crea el HelpSet y el HelpBroker
             HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
             HelpBroker hb = helpset.createHelpBroker();
@@ -339,16 +289,14 @@ public class Tabla extends javax.swing.JFrame implements Protocolo{
             // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
             // principal y secundaria.
             hb.enableHelpOnButton(btnAyuda, "Control", helpset);
-            hb.enableHelpKey(getRootPane(),"Control",helpset);
-            
-            
+            hb.enableHelpKey(getRootPane(), "Control", helpset);
+
             //hb.enableHelpOnButton(jButton2, "ventana_secundaria", helpset);
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -390,20 +338,15 @@ public class Tabla extends javax.swing.JFrame implements Protocolo{
             }
         });
     }
-    
+    GestionUsuario GU=new GestionUsuario();
     File f;
     ArrayList<Usuario> Usuarios;
     DefaultTableModel modeloTabla;
-    private static Socket skCliente;
-    boolean userOn=false;
-    private boolean salir=false;
+    boolean userOn = false;
+    private boolean salir = false;
     public static Usuario usu;
-    public static String usuario="";
-    public static String pass="";
-    private static DataInputStream flujo_entrada;
-    private static DataOutputStream flujo_salida;
-    public static ObjectInputStream flujoObjEntrada;
-    public static ObjectOutputStream flujoObjSalida;
+    public static String usuario = "";
+    public static String pass = "";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Informe;
     private javax.swing.JLabel Titulo;
@@ -415,117 +358,20 @@ public class Tabla extends javax.swing.JFrame implements Protocolo{
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblPrinci;
     // End of variables declaration//GEN-END:variables
-
-    private void iniciarOtrosComponentes() {
-         inicializarConexiones();
-        do{
-            gestionLOG();
-        } while (!userOn);
-        modeloTabla=(DefaultTableModel) tblPrinci.getModel();
-        cargarTodo();
-    }
-    private void borrarTodo(){
-        int total=modeloTabla.getRowCount();
-        for (int i = 0; i <total; i++) {
+    private void borrarTodo() {
+        int total = modeloTabla.getRowCount();
+        for (int i = 0; i < total; i++) {
             modeloTabla.removeRow(i);
         }
-        
     }
     private void cargarTodo() {
+        Usuarios=GU.gestionListarUsuarios();
         for (int i = 0; i < Usuarios.size(); i++) {
-            agregarFila(Usuarios.get(i));            
+            Usuario usu=Usuarios.get(i);
+            agregarFila(usu);
         }
     }
-     public void inicializarConexiones() {
-		try {
-			skCliente = new Socket("localhost",2000);
-                        flujo_entrada = new DataInputStream(skCliente.getInputStream());
-			flujo_salida = new DataOutputStream(skCliente.getOutputStream());
-			flujoObjSalida = new ObjectOutputStream(skCliente.getOutputStream());
-			flujoObjEntrada = new ObjectInputStream(skCliente.getInputStream());
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
-     public void gestionLOG(){
-	try {
-            Login lg=new Login(this, true);
-            lg.setVisible(true);
-		usuario=lg.getUser();
-		pass=lg.getPass();
-		
-	flujo_salida.writeUTF(LOG);	
-	//Le envio el usuario
-        flujo_salida.writeUTF(usuario);
-        //Le envio la contraseña
-        flujo_salida.writeUTF(pass);
-        //Espero confirmacion y la guardo en userOn
-        userOn = flujo_entrada.readBoolean();
-        if(userOn) {
-			usu=(Usuario)flujoObjEntrada.readObject();
-			JOptionPane.showMessageDialog(null, "Usuario logeado");
-                        gestionListarUsuarios();
-        }
-        } catch (IOException e) {
-		e.printStackTrace();
-	} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-	} 
-    }
-    public void gestionListarUsuarios() {
-		try {
-                    
-                    flujo_salida.writeUTF(LISTAR_USUARIOS);
-                    Usuarios = (ArrayList<Usuario>) flujoObjEntrada.readObject();
-                    
-                } catch (ClassNotFoundException e) {
-                        System.out.println("Error en al obtener la clase al listar");   
-                } catch (IOException e) {
-                        System.out.println("Error de SQL al listar");
-		}	
-    }
-    public void gestionInsertarUsuario(Usuario usu) {
-        try {
-            flujo_salida.writeUTF(INSERTAR_USUARIO);		
-		flujoObjSalida.writeObject(usu);
-		boolean insertado = flujo_entrada.readBoolean();
-		if (insertado) {
-			JOptionPane.showMessageDialog(null,"Se ha insertado");
-		} else {
-			JOptionPane.showMessageDialog(null,"No se ha insertado");
-		}
-        } catch (IOException e) {
-            
-        }
-        
-        //gestionListarMetas();
-    }
-    public void gestionBorrarUsuario(int id) {
-        try {
-            flujo_salida.writeUTF(BORRAR_USUARIO);
-            flujoObjSalida.writeObject(id);
-		
-		if (flujoObjEntrada.readBoolean()) {
-			JOptionPane.showMessageDialog(null,"Se ha borrado");
-		} else {
-			JOptionPane.showMessageDialog(null,"No se ha borrado");
-		}
-        } catch (IOException e) {
-            
-        }
-        //gestionListarMetas();
-    }
-    public void gestionSalir() {
-        try {
-            flujo_salida.writeUTF(SALIR);
-            System.exit(0);
-	} catch (IOException e) {
-            JOptionPane.showMessageDialog(null,"Error al salir");
-        }
-						
-    }
-    public void startReport(){
+    public void startReport() {
         /*
         try{
             JasperReport reporte;
@@ -538,6 +384,6 @@ public class Tabla extends javax.swing.JFrame implements Protocolo{
         }catch(Exception e){
             javax.swing.JOptionPane.showMessageDialog(null, e);
         }
-        */
+         */
     }
 }

@@ -5,9 +5,10 @@
  */
 package controlador;
 
+
 import static controlador.Controlador.flujoObjEntrada;
 import static controlador.Controlador.flujoObjSalida;
-import static controlador.Controlador.usu;
+import static controlador.MainFlujo.usu;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.Alquiler;
 import modelo.Protocolo;
+import static modelo.Protocolo.ACTUALIZAR_ALQUILER;
 
 /**
  *
@@ -68,7 +70,7 @@ public class GestionAlquiler {
     }
     public void gestionActualizarAlquiler(Alquiler alqui){
         try {
-            flujoObjSalida.writeUTF(Protocolo.ACTUALIZAR_ALQUILER);
+            flujoObjSalida.writeUTF(ACTUALIZAR_ALQUILER);
             flujoObjSalida.writeObject(alqui);
             flujoObjSalida.writeObject(alqui.getId());
             boolean actualizado = flujoObjEntrada.readBoolean();

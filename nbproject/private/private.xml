@@ -3,10 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ivan9/OneDrive/Escritorio/Proyecto%2016_09/ClienteSocketProyecto/src/vista/Tabla.java</file>
-            <file>file:/C:/Users/ivan9/OneDrive/Escritorio/Proyecto%2016_09/ClienteSocketProyecto/src/vista/Login.java</file>
-            <file>file:/C:/Users/ivan9/OneDrive/Escritorio/Proyecto%2016_09/ClienteSocketProyecto/src/vista/ModificarUsu.java</file>
-            <file>file:/C:/Users/ivan9/OneDrive/Escritorio/Proyecto%2016_09/ClienteSocketProyecto/src/vista/TextPrompt.java</file>
+            <file>file:/C:/Users/Iván/Desktop/ProyectoFinal/ClienteSocketProyecto/src/modelo/Usuario.java</file>
+            <file>file:/C:/Users/Iván/Desktop/ProyectoFinal/ClienteSocketProyecto/src/controlador/GestionUsuario.java</file>
+            <file>file:/C:/Users/Iván/Desktop/ProyectoFinal/ClienteSocketProyecto/src/controlador/MainFlujo.java</file>
+            <file>file:/C:/Users/Iván/Desktop/ProyectoFinal/ClienteSocketProyecto/src/controlador/GestionAlquiler.java</file>
+            <file>file:/C:/Users/Iván/Desktop/ProyectoFinal/ClienteSocketProyecto/src/modelo/Alquiler.java</file>
+            <file>file:/C:/Users/Iván/Desktop/ProyectoFinal/ClienteSocketProyecto/src/vista/Tabla.java</file>
+            <file>file:/C:/Users/Iván/Desktop/ProyectoFinal/ClienteSocketProyecto/src/modelo/Protocolo.java</file>
+            <file>file:/C:/Users/Iván/Desktop/ProyectoFinal/ClienteSocketProyecto/src/controlador/Controlador.java</file>
         </group>
     </open-files>
 </project-private>

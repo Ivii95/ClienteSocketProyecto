@@ -5,74 +5,71 @@
  */
 package controlador;
 
+import static controlador.MainFlujo.userOn;
+import static controlador.MainFlujo.usu;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import javax.swing.JOptionPane;
-import modelo.*;
-import vista.*;
+import modelo.Protocolo;
+import modelo.Usuario;
+import vista.Login;
 
 /**
  * @author Ivii
  */
 public class Controlador implements Protocolo {
 
-    private static Socket skCliente;
-    boolean userOn = false;
+    static Socket skCliente;
     private boolean salir = false;
-    public static Usuario usu;
-    public static String usuario = "";
-    public static String pass = "";
+    public  String usuario = "";
+    public  String pass = "";
     public static ObjectInputStream flujoObjEntrada;
     public static ObjectOutputStream flujoObjSalida;
+    public static DataInputStream flujo_entrada;
+    public static DataOutputStream flujo_salida;
 
     public Controlador() {
-        inicializarConexiones();
-        do {
-            gestionLOG();
-        } while (!userOn);
     }
 
     public void inicializarConexiones() {
         try {
-            skCliente = new Socket("localhost", 2000);
+            skCliente = new Socket("localhost",5000);
             flujoObjSalida = new ObjectOutputStream(skCliente.getOutputStream());
             flujoObjEntrada = new ObjectInputStream(skCliente.getInputStream());
-
+            flujo_entrada=new DataInputStream(skCliente.getInputStream());
+            flujo_salida=new DataOutputStream(skCliente.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void gestionLOG() {
+    public boolean gestionLOG() {
         try {
             Login lg = new Login(null, true);
             lg.setVisible(true);
             usuario = lg.getUser();
             pass = lg.getPass();
-
-            flujoObjSalida.writeUTF(LOG);
+            flujo_salida.writeUTF(LOG);
             //Le envio el usuario
-            flujoObjSalida.writeUTF(usuario);
+            flujo_salida.writeUTF(usuario);
             //Le envio la contraseña
-            flujoObjSalida.writeUTF(pass);
+            flujo_salida.writeUTF(pass);
             //Espero confirmacion y la guardo en userOn
-            userOn = flujoObjEntrada.readBoolean();
+            userOn = flujo_entrada.readBoolean();
             if (userOn) {
                 usu = (Usuario) flujoObjEntrada.readObject();
                 JOptionPane.showMessageDialog(null, "Usuario logeado");
-                if (usu.getAdmin()) {
-                    Tabla tbl=new Tabla(null,true);
-                    tbl.setVisible(true);
-                }
-
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return true;
     }
 
     public void gestionSalir() {

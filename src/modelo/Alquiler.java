@@ -33,7 +33,7 @@ public class Alquiler implements Serializable{
 
     public Alquiler() {
 		// TODO Auto-generated constructor stub
-	}
+    }
 
 
 	public int getId() {

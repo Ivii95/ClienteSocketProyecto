@@ -5,6 +5,9 @@
  */
 package vista;
 
+import static controlador.MainFlujo.usu;
+import java.util.Arrays;
+
 /**
  *
  * @author demon-i

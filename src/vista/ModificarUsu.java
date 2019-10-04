@@ -21,7 +21,7 @@ public class ModificarUsu extends javax.swing.JDialog {
     public ModificarUsu(java.awt.Frame parent, boolean modal) {
         super(parent,modal);
         initComponents();
-        ponLaAyuda();
+        //ponLaAyuda();
     }
 
     /**
