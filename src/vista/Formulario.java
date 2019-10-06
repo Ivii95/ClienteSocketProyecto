@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package vista;
+
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
@@ -16,6 +17,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +42,8 @@ public class Formulario extends javax.swing.JDialog {
         initComponents();
         IniciarOtrosComponentes();
         initPlaceHolder();
-        
+        setLocationRelativeTo(null);
+
     }
 
     /**
@@ -535,7 +541,7 @@ public class Formulario extends javax.swing.JDialog {
     private void btnCancelarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMousePressed
         // TODO add your handling code here:
         btnCancelar.pulse();
-        
+
     }//GEN-LAST:event_btnCancelarMousePressed
 
     private void btnCancelarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseReleased
@@ -547,215 +553,234 @@ public class Formulario extends javax.swing.JDialog {
 
     private void btnAceptarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMousePressed
         // TODO add your handling code here:
-        
+
         btnAceptar.pulse();
-        if(check.isSelected()){
-           
-        }else{
+        if (check.isSelected()) {
+
+        } else {
             lblCheck.setText("Tienes que aceptar los terminos de uso");
         }
-            
+
     }//GEN-LAST:event_btnAceptarMousePressed
 
     private void btnAceptarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseReleased
         // TODO add your handling code here:
-        if(check.isSelected()){
-        boolean admin=true;
-        btnAceptar.pulse();
-        if(checkAdmin.isSelected()){
-            admin=false;
-        }
-        String pass=new String(txtPass.getPassword());
-        user=new Usuario(0,
-        txtUser.getText(),
-        pass,
-        admin,
-        txtUser2.getText()+"@"+txtEmail2.getText(),
-        txtNombre.getText(),
-        txtApellidos.getText(),
-        Integer.parseInt(txtTlf.getText()),
-        (String)cbxSexo.getSelectedItem(),
-        cbxAño.getSelectedItem()+"-"+cbxMes.getSelectedItem()+"-"+cbxDia.getSelectedItem(),
-        (String)cbxPaises.getSelectedItem(),
-        (String)txtComunidad.getText(),
-        (String)txtProvincia.getText(),
-        (String)txtCiudad.getText(),
-        txtDomicilio.getText()
-        );
-        this.setVisible(false);
-        }else{
+        if (check.isSelected()) {
+            boolean admin = true;
+            btnAceptar.pulse();
+            if (checkAdmin.isSelected()) {
+                admin = false;
+            }
+            String pass = new String(txtPass.getPassword());
+            LocalDate fechaNac = LocalDate.parse(cbxAño.getSelectedItem() + "-" + cbxMes.getSelectedItem() + "-" + cbxDia.getSelectedItem());
+            user = new Usuario(0,
+                    txtUser.getText(),
+                    pass,
+                    admin,
+                    txtUser2.getText() + "@" + txtEmail2.getText(),
+                    txtNombre.getText(),
+                    txtApellidos.getText(),
+                    Integer.parseInt(txtTlf.getText()),
+                    (String) cbxSexo.getSelectedItem(),
+                    fechaNac,
+                    (String) cbxPaises.getSelectedItem(),
+                    (String) txtComunidad.getText(),
+                    (String) txtProvincia.getText(),
+                    (String) txtCiudad.getText(),
+                    txtDomicilio.getText()
+            );
+            this.setVisible(false);
+        } else {
             lblCheck.setVisible(true);
         }
     }//GEN-LAST:event_btnAceptarMouseReleased
 
     private void txtPassConfirmFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPassConfirmFocusLost
         // TODO add your handling code here:
-        String pass=new String(txtPass.getPassword());
-        String pass2=new String(txtPassConfirm.getPassword());
-        
-        if(pass.equals(pass2)){
-            if(kik){
-            lblPass.setText("Contraseña: "+" Correcto");
-            lblPass.setForeground(Color.black);
-            kik=false;
+        String pass = new String(txtPass.getPassword());
+        String pass2 = new String(txtPassConfirm.getPassword());
+
+        if (pass.equals(pass2)) {
+            if (kik) {
+                lblPass.setText("Contraseña: " + " Correcto");
+                lblPass.setForeground(Color.black);
+                kik = false;
             }
-        }else{
-            
+        } else {
+
             lblPass.setText("Las contraseñas no coinciden");
             lblPass.setForeground(Color.red);
-            
+
         }
     }//GEN-LAST:event_txtPassConfirmFocusLost
 
     private void txtEmail2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmail2FocusLost
         // TODO add your handling code here:
-        if(txtEmail2.getText().isEmpty())lblCorreoRecuperacion.setForeground(Color.red);
+        if (txtEmail2.getText().isEmpty()) {
+            lblCorreoRecuperacion.setForeground(Color.red);
+        }
     }//GEN-LAST:event_txtEmail2FocusLost
 
     private void cbxComunidadItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxComunidadItemStateChanged
-        cbxProvincia.setVisible(true);                                    
+        cbxProvincia.setVisible(true);
         BufferedReader br = null;
         File archivo;
         try {
-        if(cbxComunidad.getSelectedItem().equals("Andalucia")){
-          cbxProvincia.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Provincias"+File.separator+"Andalucia.txt");
-            br = new BufferedReader(new FileReader(archivo));
-            String lineaLeida;
+            if (cbxComunidad.getSelectedItem().equals("Andalucia")) {
+                cbxProvincia.removeAllItems();
+                archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Provincias" + File.separator + "Andalucia.txt");
+                br = new BufferedReader(new FileReader(archivo));
+                String lineaLeida;
                 lineaLeida = br.readLine();
-            while (lineaLeida != null) {
-                cbxProvincia.addItem(lineaLeida);
-                lineaLeida = br.readLine();
+                while (lineaLeida != null) {
+                    cbxProvincia.addItem(lineaLeida);
+                    lineaLeida = br.readLine();
+                }
+                br.close();
             }
-            br.close(); 
-        }if(cbxComunidad.getSelectedItem().equals("Aragon")){
-          cbxProvincia.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Provincias"+File.separator+"Aragon.txt");
-            br = new BufferedReader(new FileReader(archivo));
-            String lineaLeida;
+            if (cbxComunidad.getSelectedItem().equals("Aragon")) {
+                cbxProvincia.removeAllItems();
+                archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Provincias" + File.separator + "Aragon.txt");
+                br = new BufferedReader(new FileReader(archivo));
+                String lineaLeida;
                 lineaLeida = br.readLine();
-            while (lineaLeida != null) {
-                cbxProvincia.addItem(lineaLeida);
-                lineaLeida = br.readLine();
+                while (lineaLeida != null) {
+                    cbxProvincia.addItem(lineaLeida);
+                    lineaLeida = br.readLine();
+                }
+                br.close();
             }
-            br.close(); 
-        }if(cbxComunidad.getSelectedItem().equals("Asturias")){
-          cbxProvincia.removeAllItems();
-          cbxProvincia.setVisible(false);
-          cbxProvincia.addItem("Principado de Asturias");
-        }if(cbxComunidad.getSelectedItem().equals("Baleares")){
-          cbxProvincia.removeAllItems();
-          cbxProvincia.setVisible(false);
-          cbxProvincia.addItem("Baleares");
-        }if(cbxComunidad.getSelectedItem().equals("Canarias")){
-          cbxProvincia.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Provincias"+File.separator+"Canarias.txt");
-            br = new BufferedReader(new FileReader(archivo));
-            String lineaLeida;
-                lineaLeida = br.readLine();
-            while (lineaLeida != null) {
-                cbxProvincia.addItem(lineaLeida);
-                lineaLeida = br.readLine();
+            if (cbxComunidad.getSelectedItem().equals("Asturias")) {
+                cbxProvincia.removeAllItems();
+                cbxProvincia.setVisible(false);
+                cbxProvincia.addItem("Principado de Asturias");
             }
-            br.close(); 
-        }if(cbxComunidad.getSelectedItem().equals("Cantabria")){
-          cbxProvincia.removeAllItems();
-          cbxProvincia.setVisible(false);
-        }if(cbxComunidad.getSelectedItem().equals("Castilla la Mancha")){
-          cbxProvincia.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Provincias"+File.separator+"CastillaLaMancha.txt");
-            br = new BufferedReader(new FileReader(archivo));
-            String lineaLeida;
-                lineaLeida = br.readLine();
-            while (lineaLeida != null) {
-                cbxProvincia.addItem(lineaLeida);
-                lineaLeida = br.readLine();
+            if (cbxComunidad.getSelectedItem().equals("Baleares")) {
+                cbxProvincia.removeAllItems();
+                cbxProvincia.setVisible(false);
+                cbxProvincia.addItem("Baleares");
             }
-            br.close(); 
-        }if(cbxComunidad.getSelectedItem().equals("Castilla Leon")){
-          cbxProvincia.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Provincias"+File.separator+"CastillaLeon.txt");
-            br = new BufferedReader(new FileReader(archivo));
-            String lineaLeida;
+            if (cbxComunidad.getSelectedItem().equals("Canarias")) {
+                cbxProvincia.removeAllItems();
+                archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Provincias" + File.separator + "Canarias.txt");
+                br = new BufferedReader(new FileReader(archivo));
+                String lineaLeida;
                 lineaLeida = br.readLine();
-            while (lineaLeida != null) {
-                cbxProvincia.addItem(lineaLeida);
-                lineaLeida = br.readLine();
+                while (lineaLeida != null) {
+                    cbxProvincia.addItem(lineaLeida);
+                    lineaLeida = br.readLine();
+                }
+                br.close();
             }
-            br.close(); 
-        }if(cbxComunidad.getSelectedItem().equals("Cataluna")){
-          cbxProvincia.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Provincias"+File.separator+"Cataluna.txt");
-            br = new BufferedReader(new FileReader(archivo));
-            String lineaLeida;
-                lineaLeida = br.readLine();
-            while (lineaLeida != null) {
-                cbxProvincia.addItem(lineaLeida);
-                lineaLeida = br.readLine();
+            if (cbxComunidad.getSelectedItem().equals("Cantabria")) {
+                cbxProvincia.removeAllItems();
+                cbxProvincia.setVisible(false);
             }
-            br.close(); 
-        }if(cbxComunidad.getSelectedItem().equals("Extremadura")){
-          cbxProvincia.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Provincias"+File.separator+"Extremadura.txt");
-            br = new BufferedReader(new FileReader(archivo));
-            String lineaLeida;
+            if (cbxComunidad.getSelectedItem().equals("Castilla la Mancha")) {
+                cbxProvincia.removeAllItems();
+                archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Provincias" + File.separator + "CastillaLaMancha.txt");
+                br = new BufferedReader(new FileReader(archivo));
+                String lineaLeida;
                 lineaLeida = br.readLine();
-            while (lineaLeida != null) {
-                cbxProvincia.addItem(lineaLeida);
-                lineaLeida = br.readLine();
+                while (lineaLeida != null) {
+                    cbxProvincia.addItem(lineaLeida);
+                    lineaLeida = br.readLine();
+                }
+                br.close();
             }
-            br.close(); 
-        }if(cbxComunidad.getSelectedItem().equals("Galicia")){
-          cbxProvincia.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Provincias"+File.separator+"Galicia.txt");
-            br = new BufferedReader(new FileReader(archivo));
-            String lineaLeida;
+            if (cbxComunidad.getSelectedItem().equals("Castilla Leon")) {
+                cbxProvincia.removeAllItems();
+                archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Provincias" + File.separator + "CastillaLeon.txt");
+                br = new BufferedReader(new FileReader(archivo));
+                String lineaLeida;
                 lineaLeida = br.readLine();
-            while (lineaLeida != null) {
-                cbxProvincia.addItem(lineaLeida);
-                lineaLeida = br.readLine();
+                while (lineaLeida != null) {
+                    cbxProvincia.addItem(lineaLeida);
+                    lineaLeida = br.readLine();
+                }
+                br.close();
             }
-            br.close(); 
-        }if(cbxComunidad.getSelectedItem().equals("La Rioja")){
-          cbxProvincia.removeAllItems();
-            cbxProvincia.setVisible(false);
-            cbxProvincia.addItem("La Rioja");
-        }if(cbxComunidad.getSelectedItem().equals("Madrid")){
-          cbxProvincia.removeAllItems();
-            cbxProvincia.setVisible(false);
-            cbxProvincia.addItem("Madrid");
-        }if(cbxComunidad.getSelectedItem().equals("Murcia")){
-          cbxProvincia.removeAllItems();
-            cbxProvincia.setVisible(false);
-            cbxProvincia.addItem("Murcia");
-        }if(cbxComunidad.getSelectedItem().equals("Navarra")){
-          cbxProvincia.removeAllItems();
-            cbxProvincia.setVisible(false);
-            cbxProvincia.addItem("Navarra");
-        }if(cbxComunidad.getSelectedItem().equals("Pais Vasco")){
-          cbxProvincia.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Provincias"+File.separator+"PaisVasco.txt");
-            br = new BufferedReader(new FileReader(archivo));
-            String lineaLeida;
+            if (cbxComunidad.getSelectedItem().equals("Cataluna")) {
+                cbxProvincia.removeAllItems();
+                archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Provincias" + File.separator + "Cataluna.txt");
+                br = new BufferedReader(new FileReader(archivo));
+                String lineaLeida;
                 lineaLeida = br.readLine();
-            while (lineaLeida != null) {
-                cbxProvincia.addItem(lineaLeida);
-                lineaLeida = br.readLine();
+                while (lineaLeida != null) {
+                    cbxProvincia.addItem(lineaLeida);
+                    lineaLeida = br.readLine();
+                }
+                br.close();
             }
-            br.close(); 
-        }if(cbxComunidad.getSelectedItem().equals("Valencia")){
-          cbxProvincia.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Provincias"+File.separator+"Valencia.txt");
-            br = new BufferedReader(new FileReader(archivo));
-            String lineaLeida;
+            if (cbxComunidad.getSelectedItem().equals("Extremadura")) {
+                cbxProvincia.removeAllItems();
+                archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Provincias" + File.separator + "Extremadura.txt");
+                br = new BufferedReader(new FileReader(archivo));
+                String lineaLeida;
                 lineaLeida = br.readLine();
-            while (lineaLeida != null) {
-                cbxProvincia.addItem(lineaLeida);
-                lineaLeida = br.readLine();
+                while (lineaLeida != null) {
+                    cbxProvincia.addItem(lineaLeida);
+                    lineaLeida = br.readLine();
+                }
+                br.close();
             }
-            br.close(); 
-        }
-            } catch (FileNotFoundException ex) {
+            if (cbxComunidad.getSelectedItem().equals("Galicia")) {
+                cbxProvincia.removeAllItems();
+                archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Provincias" + File.separator + "Galicia.txt");
+                br = new BufferedReader(new FileReader(archivo));
+                String lineaLeida;
+                lineaLeida = br.readLine();
+                while (lineaLeida != null) {
+                    cbxProvincia.addItem(lineaLeida);
+                    lineaLeida = br.readLine();
+                }
+                br.close();
+            }
+            if (cbxComunidad.getSelectedItem().equals("La Rioja")) {
+                cbxProvincia.removeAllItems();
+                cbxProvincia.setVisible(false);
+                cbxProvincia.addItem("La Rioja");
+            }
+            if (cbxComunidad.getSelectedItem().equals("Madrid")) {
+                cbxProvincia.removeAllItems();
+                cbxProvincia.setVisible(false);
+                cbxProvincia.addItem("Madrid");
+            }
+            if (cbxComunidad.getSelectedItem().equals("Murcia")) {
+                cbxProvincia.removeAllItems();
+                cbxProvincia.setVisible(false);
+                cbxProvincia.addItem("Murcia");
+            }
+            if (cbxComunidad.getSelectedItem().equals("Navarra")) {
+                cbxProvincia.removeAllItems();
+                cbxProvincia.setVisible(false);
+                cbxProvincia.addItem("Navarra");
+            }
+            if (cbxComunidad.getSelectedItem().equals("Pais Vasco")) {
+                cbxProvincia.removeAllItems();
+                archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Provincias" + File.separator + "PaisVasco.txt");
+                br = new BufferedReader(new FileReader(archivo));
+                String lineaLeida;
+                lineaLeida = br.readLine();
+                while (lineaLeida != null) {
+                    cbxProvincia.addItem(lineaLeida);
+                    lineaLeida = br.readLine();
+                }
+                br.close();
+            }
+            if (cbxComunidad.getSelectedItem().equals("Valencia")) {
+                cbxProvincia.removeAllItems();
+                archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Provincias" + File.separator + "Valencia.txt");
+                br = new BufferedReader(new FileReader(archivo));
+                String lineaLeida;
+                lineaLeida = br.readLine();
+                while (lineaLeida != null) {
+                    cbxProvincia.addItem(lineaLeida);
+                    lineaLeida = br.readLine();
+                }
+                br.close();
+            }
+        } catch (FileNotFoundException ex) {
             Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
@@ -765,33 +790,35 @@ public class Formulario extends javax.swing.JDialog {
 
     private void cbxAñoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxAñoFocusGained
 
-        if(cbxAño.getSelectedItem().equals("Año")){
+        if (cbxAño.getSelectedItem().equals("Año")) {
             cbxAño.removeItemAt(0);
         }
     }//GEN-LAST:event_cbxAñoFocusGained
 
     private void txtApellidosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtApellidosFocusLost
         // TODO add your handling code here:
-        if(txtNombre.getText().isEmpty() && txtApellidos.getText().isEmpty())lblNombre.setForeground(Color.red);
+        if (txtNombre.getText().isEmpty() && txtApellidos.getText().isEmpty()) {
+            lblNombre.setForeground(Color.red);
+        }
     }//GEN-LAST:event_txtApellidosFocusLost
 
     private void sinNumerosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sinNumerosKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c < 'ñ' || c > 'ñ') && (c < 'Ñ' || c > 'Ñ')
-            && (c < ' ' || c > ' ')) {
+                && (c < ' ' || c > ' ')) {
             evt.consume();
         }
     }//GEN-LAST:event_sinNumerosKeyTyped
 
     private void cbxPaisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxPaisesActionPerformed
-        String pais=(String) cbxPaises.getSelectedItem();
-        int tamaño=pais.length();
-        String pais3=pais.substring(tamaño-3, tamaño-1);
-        pais3=pais3.toLowerCase();
-        pais="lib"+File.separator+"BanderasPNG"+File.separator+""+pais3+".png";
+        String pais = (String) cbxPaises.getSelectedItem();
+        int tamaño = pais.length();
+        String pais3 = pais.substring(tamaño - 3, tamaño - 1);
+        pais3 = pais3.toLowerCase();
+        pais = "lib" + File.separator + "BanderasPNG" + File.separator + "" + pais3 + ".png";
         //JOptionPane.showMessageDialog(this, pais);
-        ImageIcon img=new ImageIcon(pais);
+        ImageIcon img = new ImageIcon(pais);
         //Icon icono=new ImageIcon(img.getImage().getScaledInstance(lblPais.getWidth(),lblPais.getHeight(), Image.SCALE_DEFAULT)); 
         lblPais.setIcon(img);
         mostrarComunidades();
@@ -811,74 +838,77 @@ public class Formulario extends javax.swing.JDialog {
 
     private void cbxMesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxMesFocusGained
         // TODO add your handling code here:
-        if(cbxMes.getSelectedItem().equals("Mes"))
-        cbxMes.removeItemAt(0);
+        if (cbxMes.getSelectedItem().equals("Mes")) {
+            cbxMes.removeItemAt(0);
+        }
     }//GEN-LAST:event_cbxMesFocusGained
 
     private void cbxDiaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxDiaFocusGained
         // TODO add your handling code here:
-        if(cbxDia.getSelectedItem().equals("Dia"))
-        cbxDia.removeItemAt(0);
-        switch(cbxMes.getSelectedItem().toString()){
+        if (cbxDia.getSelectedItem().equals("Dia")) {
+            cbxDia.removeItemAt(0);
+        }
+        switch (cbxMes.getSelectedItem().toString()) {
             case "Enero":
-            dias=31;
-            break;
+                dias = 31;
+                break;
             case "Febrero":
-            dias=29;
-            break;
+                dias = 29;
+                break;
             case "Marzo":
-            dias=31;
-            break;
+                dias = 31;
+                break;
             case "Abril":
-            dias=30;
-            break;
+                dias = 30;
+                break;
             case "Mayo":
-            dias=31;
-            break;
+                dias = 31;
+                break;
             case "Junio":
-            dias=30;
-            break;
+                dias = 30;
+                break;
             case "Julio":
-            dias=31;
-            break;
+                dias = 31;
+                break;
             case "Agosto":
-            dias=31;
-            break;
+                dias = 31;
+                break;
             case "Septiembre":
-            dias=30;
-            break;
+                dias = 30;
+                break;
             case "Octubre":
-            dias=31;
-            break;
+                dias = 31;
+                break;
             case "Noviembre":
-            dias=30;
-            break;
+                dias = 30;
+                break;
             case "Diciembre":
-            dias=31;
-            break;
+                dias = 31;
+                break;
         }
         cbxDia.removeAllItems();
         for (int i = 1; i <= dias; i++) {
-            cbxDia.addItem(""+i);
+            cbxDia.addItem("" + i);
         }
     }//GEN-LAST:event_cbxDiaFocusGained
 
     private void cbxSexoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxSexoFocusGained
         // TODO add your handling code here:
-        if(cbxSexo.getSelectedItem().equals("Selecciona el sexo"))
-        cbxSexo.removeItemAt(0);
+        if (cbxSexo.getSelectedItem().equals("Selecciona el sexo")) {
+            cbxSexo.removeItemAt(0);
+        }
     }//GEN-LAST:event_cbxSexoFocusGained
 
     private void cbxProvinciaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxProvinciaItemStateChanged
-         
-       cbxCiudad.setVisible(true);
-       BufferedReader br = null;
-       File archivo=null;
-       try{
-           String provincia=cbxProvincia.getSelectedItem().toString();
-          
+
+        cbxCiudad.setVisible(true);
+        BufferedReader br = null;
+        File archivo = null;
+        try {
+            String provincia = cbxProvincia.getSelectedItem().toString();
+
             cbxCiudad.removeAllItems();
-            archivo = new File("lib"+File.separator+"DocumentosTexto"+File.separator+"pueblos"+provincia+".txt");
+            archivo = new File("lib" + File.separator + "DocumentosTexto" + File.separator + "pueblos" + provincia + ".txt");
             br = new BufferedReader(new FileReader(archivo));
             String lineaLeida;
             lineaLeida = br.readLine();
@@ -887,15 +917,15 @@ public class Formulario extends javax.swing.JDialog {
                 lineaLeida = br.readLine();
             }
             br.close();
-                   
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
-        }catch(NullPointerException e){
-            
+        } catch (NullPointerException e) {
+
         }
-       txtProvincia.setText((String) cbxProvincia.getSelectedItem());
+        txtProvincia.setText((String) cbxProvincia.getSelectedItem());
     }//GEN-LAST:event_cbxProvinciaItemStateChanged
 
     private void cbxCiudadItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxCiudadItemStateChanged
@@ -904,35 +934,35 @@ public class Formulario extends javax.swing.JDialog {
     }//GEN-LAST:event_cbxCiudadItemStateChanged
     void setUsuario(Usuario usu) {
     }
-    
-    public Usuario getUsuario(){
+
+    public Usuario getUsuario() {
         return this.user;
     }
-    private void mostrarComunidades(){
-        if(cbxPaises.getSelectedItem().equals("Spain 	ES ")){
+
+    private void mostrarComunidades() {
+        if (cbxPaises.getSelectedItem().equals("Spain 	ES ")) {
             txtComunidad.setVisible(false);
             txtProvincia.setVisible(false);
             txtCiudad.setVisible(false);
             cbxComunidad.setVisible(true);
             try {
-            BufferedReader br =new BufferedReader(new FileReader(new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Comunidades.txt")));
-            try {
-                String linea=br.readLine();
-                while(linea!=null){
-                    cbxComunidad.addItem(linea);
-                    linea=br.readLine();
+                BufferedReader br = new BufferedReader(new FileReader(new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Comunidades.txt")));
+                try {
+                    String linea = br.readLine();
+                    while (linea != null) {
+                        cbxComunidad.addItem(linea);
+                        linea = br.readLine();
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    JOptionPane.showMessageDialog(rootPane, e.getMessage());
+                } catch (IOException ex) {
+                    Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }catch(ArrayIndexOutOfBoundsException e){
-                JOptionPane.showMessageDialog(rootPane, e.getMessage());
-            } catch (IOException ex) {
-                Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
-            }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            
-        }else{
+
+        } else {
             cbxComunidad.setVisible(false);
             cbxCiudad.setVisible(false);
             cbxProvincia.setVisible(false);
@@ -941,19 +971,16 @@ public class Formulario extends javax.swing.JDialog {
             txtCiudad.setVisible(true);
         }
     }
-    private void ponLaAyuda() 
-    {
-        try 
-        {
+
+    private void ponLaAyuda() {
+        try {
             // Carga el fichero de ayuda
-            java.io.File fichero = new java.io.File("lib"+File.separator+"help"+java.io.File.separator+"help_set.hs");
+            java.io.File fichero = new java.io.File("lib" + File.separator + "help" + java.io.File.separator + "help_set.hs");
             java.net.URL hsURL = fichero.toURI().toURL();
-            
+
             //ClassLoader cl = Examen20171122.class.getClassLoader();
             //java.net.URL hsURL = HelpSet.findHelpSet(cl,"help\\help_set.hs");
-            
             //HelpSet hs = new HelpSet(null, hsURL);
-
             // Crea el HelpSet y el HelpBroker
             HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
             HelpBroker hb = helpset.createHelpBroker();
@@ -961,17 +988,14 @@ public class Formulario extends javax.swing.JDialog {
             // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
             // principal y secundaria.
             hb.enableHelpOnButton(btnAyuda, "Formulario", helpset);
-            hb.enableHelpKey(getRootPane(),"Formulario",helpset);
-            
-            
+            hb.enableHelpKey(getRootPane(), "Formulario", helpset);
+
             //hb.enableHelpOnButton(jButton2, "ventana_secundaria", helpset);
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-   
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1013,11 +1037,11 @@ public class Formulario extends javax.swing.JDialog {
             }
         });
     }
-ArrayList paises;
-ArrayList abreviaturas;
-Usuario user;
-private int dias=31;
-boolean kik=true;
+    ArrayList paises;
+    ArrayList abreviaturas;
+    Usuario user;
+    private int dias = 31;
+    boolean kik = true;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private btn.btn btnAceptar;
     private javax.swing.JButton btnAyuda;
@@ -1071,69 +1095,67 @@ boolean kik=true;
         TextPrompt placeholder = new TextPrompt("Nombre", txtNombre);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
-        placeholder=new TextPrompt("Apellidos", txtApellidos);
+        placeholder = new TextPrompt("Apellidos", txtApellidos);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
         //Usuario
-        placeholder=new TextPrompt("Ejemplo", txtUser);
+        placeholder = new TextPrompt("Ejemplo", txtUser);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
-       //Contraseña
-        placeholder=new TextPrompt("Contraseña", txtPass);
+        //Contraseña
+        placeholder = new TextPrompt("Contraseña", txtPass);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
-        placeholder=new TextPrompt("Confirmar Contraseña", txtPassConfirm);
+        placeholder = new TextPrompt("Confirmar Contraseña", txtPassConfirm);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
         //Correo
-        placeholder=new TextPrompt("Ejemplo", txtUser2);
+        placeholder = new TextPrompt("Ejemplo", txtUser2);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
-        placeholder=new TextPrompt("Ejemplo.com", txtEmail2);
+        placeholder = new TextPrompt("Ejemplo.com", txtEmail2);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
         //Datos Personales
-        placeholder=new TextPrompt("Comunidad Autonoma", txtComunidad);
+        placeholder = new TextPrompt("Comunidad Autonoma", txtComunidad);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
-        placeholder=new TextPrompt("Provincia", txtProvincia);
+        placeholder = new TextPrompt("Provincia", txtProvincia);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
-        placeholder=new TextPrompt("Ciudad", txtCiudad);
+        placeholder = new TextPrompt("Ciudad", txtCiudad);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
-        placeholder=new TextPrompt("C/animus", txtDomicilio);
+        placeholder = new TextPrompt("C/animus", txtDomicilio);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
-        placeholder=new TextPrompt("669...", txtTlf);
+        placeholder = new TextPrompt("669...", txtTlf);
         placeholder.changeAlpha(0.75f);
         placeholder.changeStyle(Font.ITALIC);
-        
-        
-            
+
     }
 
     private void IniciarOtrosComponentes() {
         ponLaAyuda();
         cbxComunidad.setVisible(false);
-            cbxCiudad.setVisible(false);
-            cbxProvincia.setVisible(false);
-        ImageIcon img=new ImageIcon("lib"+File.separator+"BanderasPNG"+File.separator+"es.png");
+        cbxCiudad.setVisible(false);
+        cbxProvincia.setVisible(false);
+        ImageIcon img = new ImageIcon("lib" + File.separator + "BanderasPNG" + File.separator + "es.png");
         //Icon icono=new ImageIcon(img.getImage().getScaledInstance(lblPais.getWidth(),lblPais.getHeight(), Image.SCALE_DEFAULT)); 
         lblPais.setIcon(img);
-        paises=new ArrayList();
-        abreviaturas=new ArrayList();
+        paises = new ArrayList();
+        abreviaturas = new ArrayList();
         cbxDia.removeAllItems();
         cbxDia.addItem("Dia");
         for (int i = 1; i <= dias; i++) {
-            cbxDia.addItem(""+i);
+            cbxDia.addItem("" + i);
         }
-        for (int i = 2018; i >=1900 ; i--) {
-           cbxAño.addItem(""+i);
+        for (int i = 2018; i >= 1900; i--) {
+            cbxAño.addItem("" + i);
         }
         btnCancelar.word("Cancelar");
         btnAceptar.word("Confirmar");
-        
+
         /*try {
             BufferedReader br =new BufferedReader(new FileReader(new File("Paises.txt")));
             try {
@@ -1149,15 +1171,15 @@ boolean kik=true;
             Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
         }*/
         try {
-            BufferedReader br =new BufferedReader(new FileReader(new File("lib"+File.separator+"DocumentosTexto"+File.separator+"Abre.txt")));
+            BufferedReader br = new BufferedReader(new FileReader(new File("lib" + File.separator + "DocumentosTexto" + File.separator + "Abre.txt")));
             try {
-                String linea=br.readLine();
-                while(linea!=null){
-                    String pais=linea;
+                String linea = br.readLine();
+                while (linea != null) {
+                    String pais = linea;
                     paises.add(pais);
-                    linea=br.readLine();
+                    linea = br.readLine();
                 }
-            }catch(ArrayIndexOutOfBoundsException e){
+            } catch (ArrayIndexOutOfBoundsException e) {
                 JOptionPane.showMessageDialog(rootPane, e.getMessage());
             } catch (IOException ex) {
                 Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
@@ -1168,11 +1190,7 @@ boolean kik=true;
         for (int i = 0; i < paises.size(); i++) {
             cbxPaises.addItem((String) paises.get(i));
         }
-        
-                
-        
-    }
 
-    
+    }
 
 }

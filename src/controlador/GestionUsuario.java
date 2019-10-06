@@ -86,9 +86,11 @@ public class GestionUsuario implements Protocolo {
     public void gestionActualizarUsuario(Usuario usu) {
         try {
             flujo_salida.writeUTF(ACTUALIZAR_USUARIO);
+            JOptionPane.showMessageDialog(null, "Se ha actualizado1");
             flujoObjSalida.writeObject(usu);
-            flujo_salida.writeUTF(usu.getId()+"");
-            boolean actualizado = flujoObjEntrada.readBoolean();
+            JOptionPane.showMessageDialog(null, "Se ha actualizado2");
+            boolean actualizado = flujo_entrada.readBoolean();
+            JOptionPane.showMessageDialog(null, "Se ha actualizado3");
             if (actualizado) {
                 JOptionPane.showMessageDialog(null, "Se ha actualizado");
             } else {

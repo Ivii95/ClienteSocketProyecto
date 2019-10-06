@@ -5,6 +5,12 @@
  */
 package vista;
 
+import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import modelo.*;
@@ -21,6 +27,7 @@ public class ModificarUsu extends javax.swing.JDialog {
     public ModificarUsu(java.awt.Frame parent, boolean modal) {
         super(parent,modal);
         initComponents();
+        setLocationRelativeTo(null);
         //ponLaAyuda();
     }
 
@@ -288,26 +295,29 @@ public class ModificarUsu extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        use.setUsuario(txtnom_usu.getText());
-        use.setContrasena(txtpass.getText());
-        boolean Admin=false;
-        if(checkAdmin.isSelected()){
-            Admin=true;
-        }else{
-            Admin=false;
-        }
-        use.setAdmin(checkAdmin.isSelected());
-        use.setCorreoRecuperacion(txtcorreo.getText());
-        use.setNombre(txtnombre.getText());
-        use.setApellidos(txtapellidos.getText());
-        use.setTlf(Integer.parseInt(txttlf.getText()));
-        use.setNacimiento(txtfech_nac.getText());
-        use.setPais(txtpais.getText());
-        use.setComunidadAutonoma(txtcomunidad_autonoma.getText());
-        use.setProvincia(txtprovincia.getText());
-        use.setCiudad(txtciudad.getText());
-        use.setDomicilio(txtdomicilio.getText());
-        setVisible(false);
+
+            use.setUsuario(txtnom_usu.getText());
+            use.setContrasena(txtpass.getText());
+            boolean Admin=false;
+            if(checkAdmin.isSelected()){
+                Admin=true;
+            }else{
+                Admin=false;
+            }
+            use.setAdmin(checkAdmin.isSelected());
+            use.setCorreoRecuperacion(txtcorreo.getText());
+            use.setNombre(txtnombre.getText());
+            use.setApellidos(txtapellidos.getText());
+            use.setTlf(Integer.parseInt(txttlf.getText()));
+            LocalDate fechaNac=LocalDate.parse(txtfech_nac.getText());
+            use.setNacimiento(fechaNac);
+            use.setPais(txtpais.getText());
+            use.setComunidadAutonoma(txtcomunidad_autonoma.getText());
+            use.setProvincia(txtprovincia.getText());
+            use.setCiudad(txtciudad.getText());
+            use.setDomicilio(txtdomicilio.getText());
+            setVisible(false);
+        
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     /**
@@ -329,7 +339,7 @@ public class ModificarUsu extends javax.swing.JDialog {
         txtapellidos.setText(user.getApellidos());
         txttlf.setText(user.getTlf()+"");
         txtsexo.setText(user.getSexo());
-        txtfech_nac.setText(user.getNacimiento());
+        txtfech_nac.setText(user.getNacimiento()+"");
         txtpais.setText(user.getPais());
         txtcomunidad_autonoma.setText(user.getComunidadAutonoma());
         txtprovincia.setText(user.getProvincia());
@@ -407,6 +417,7 @@ public class ModificarUsu extends javax.swing.JDialog {
             }
         });
     }
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private Usuario use;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel admin;

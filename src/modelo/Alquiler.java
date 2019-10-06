@@ -6,7 +6,7 @@
 package modelo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -17,10 +17,10 @@ public class Alquiler implements Serializable{
     public Pista p;
     public Usuario usu;
     public String horaInicio,horaFin;
-    public String dia;
+    public Date dia;
     public boolean ocupada;
 
-    public Alquiler(int id, Pista p, Usuario usu, String horaInicio, String horaFin, String dia, boolean ocupada) {
+    public Alquiler(int id, Pista p, Usuario usu, String horaInicio, String horaFin, Date dia, boolean ocupada) {
         this.id = id;
         this.p = p;
         this.usu = usu;
@@ -33,7 +33,7 @@ public class Alquiler implements Serializable{
 
     public Alquiler() {
 		// TODO Auto-generated constructor stub
-    }
+	}
 
 
 	public int getId() {
@@ -76,11 +76,11 @@ public class Alquiler implements Serializable{
         this.horaFin = horaFin;
     }
 
-    public String getDia() {
+    public Date getDia() {
         return dia;
     }
 
-    public void setDia(String dia) {
+    public void setDia(Date dia) {
         this.dia = dia;
     }
 

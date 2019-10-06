@@ -83,8 +83,9 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
         tblPrinci.setSelectionForeground(new java.awt.Color(51, 255, 255));
         jScrollPane1.setViewportView(tblPrinci);
         if (tblPrinci.getColumnModel().getColumnCount() > 0) {
-            tblPrinci.getColumnModel().getColumn(0).setResizable(false);
+            tblPrinci.getColumnModel().getColumn(0).setMinWidth(0);
             tblPrinci.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tblPrinci.getColumnModel().getColumn(0).setMaxWidth(0);
             tblPrinci.getColumnModel().getColumn(1).setResizable(false);
             tblPrinci.getColumnModel().getColumn(2).setResizable(false);
             tblPrinci.getColumnModel().getColumn(3).setResizable(false);
@@ -359,10 +360,7 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
     private javax.swing.JTable tblPrinci;
     // End of variables declaration//GEN-END:variables
     private void borrarTodo() {
-        int total = modeloTabla.getRowCount();
-        for (int i = 0; i < total; i++) {
-            modeloTabla.removeRow(i);
-        }
+        modeloTabla.setRowCount(0);
     }
     private void cargarTodo() {
         Usuarios=GU.gestionListarUsuarios();
