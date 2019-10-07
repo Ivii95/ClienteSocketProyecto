@@ -6,9 +6,16 @@
 package vista;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
+import modelo.Alquiler;
+import modelo.ModeloTabla;
+import modelo.Pista;
+import modelo.Usuario;
 
 /**
  *
@@ -21,29 +28,43 @@ public class ReservarPista extends javax.swing.JFrame {
      */
     public ReservarPista() {
         initComponents();
+        iniciarObjetos();
         iniciarOtrosComponentes();
         setLocationRelativeTo(null);
     }
-    public void iniciarOtrosComponentes(){
+
+    public void iniciarOtrosComponentes() {
         //ponLaAyuda();
-        modeloReservaPista1= new DefaultTableModel(new Object[]{"Dia","HoraInicio","HoraFinal"},0);
-        modeloHechaPista1=new DefaultTableModel(new Object[]{"Dia","HoraInicio","HoraFinal"},0);
-        modeloReservaPista2=new DefaultTableModel(new Object[]{"Dia","HoraInicio","HoraFinal"},0);
-        modeloHechaPista2=new DefaultTableModel(new Object[]{"Dia","HoraInicio","HoraFinal"},0);
-        modeloReservaPista3=new DefaultTableModel(new Object[]{"Dia","HoraInicio","HoraFinal"},0);
-        modeloHechaPista3=new DefaultTableModel(new Object[]{"Dia","HoraInicio","HoraFinal"},0);
-        modeloReservaPista1.addRow(new Object[]{"19/02/2018",8,9});
-        modeloReservaPista1.addRow(new Object[]{"19/02/2018",9,10});
-        modeloReservaPista2.addRow(new Object[]{"19/02/2018",8,9});
-        modeloReservaPista2.addRow(new Object[]{"19/02/2018",9,10});
-        modeloReservaPista3.addRow(new Object[]{"19/02/2018",8,9});
-        modeloReservaPista3.addRow(new Object[]{"19/02/2018",9,10});
+    }
+
+    private void iniciarObjetos() {
+        ahora = LocalDate.now();
+        tomorrow= ahora.plus(1, ChronoUnit.DAYS);
+        modeloReservaPista1 = (ModeloTabla) new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
+        modeloHechaPista1 = new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
+        modeloReservaPista2 = new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
+        modeloHechaPista2 = new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
+        modeloReservaPista3 = new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
+        modeloHechaPista3 = new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
+        String[] horas_inicios = new String[14];
+        String[] horas_finales = new String[14];
+        int hora = 9;
+        for (int i = 0; i < 14; i++) {
+            horas_inicios[i] = hora + ":00";
+            hora++;
+            horas_finales[i] = hora + ":00";
+            modeloReservaPista1.addRow(new Object[]{ahora, horas_inicios[i], horas_finales[i]});
+            modeloReservaPista2.addRow(new Object[]{ahora, horas_inicios[i], horas_finales[i]});
+            modeloReservaPista3.addRow(new Object[]{ahora, horas_inicios[i], horas_finales[i]});
+        }
+        for (int i = 0; i < 14; i++) {
+            modeloReservaPista1.addRow(new Object[]{tomorrow, horas_inicios[i], horas_finales[i]});
+            modeloReservaPista2.addRow(new Object[]{tomorrow, horas_inicios[i], horas_finales[i]});
+            modeloReservaPista3.addRow(new Object[]{tomorrow, horas_inicios[i], horas_finales[i]});
+        }
         tblReserva.setModel(modeloReservaPista1);
         tblHecha.setModel(modeloHechaPista1);
-        
-        
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,7 +87,8 @@ public class ReservarPista extends javax.swing.JFrame {
         tblReserva = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblHecha = new javax.swing.JTable();
-        btnFlecha = new org.edisoncor.gui.button.ButtonIcon();
+        btnFlechaIzq = new org.edisoncor.gui.button.ButtonIcon();
+        btnFlechaDch = new org.edisoncor.gui.button.ButtonIcon();
         txtNombre = new javax.swing.JLabel();
         txtTusReservas = new javax.swing.JLabel();
         btnAyuda = new javax.swing.JButton();
@@ -161,19 +183,29 @@ public class ReservarPista extends javax.swing.JFrame {
                 "Dia", "Hora Inicio", "Hora Final"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tblReserva.setEditingColumn(0);
-        tblReserva.setEditingRow(0);
         tblReserva.setRowSelectionAllowed(false);
         tblReserva.setSelectionForeground(new java.awt.Color(102, 255, 255));
         jScrollPane1.setViewportView(tblReserva);
+        if (tblReserva.getColumnModel().getColumnCount() > 0) {
+            tblReserva.getColumnModel().getColumn(0).setResizable(false);
+            tblReserva.getColumnModel().getColumn(1).setResizable(false);
+            tblReserva.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 330, 280));
 
@@ -200,14 +232,23 @@ public class ReservarPista extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 370, 310, 130));
 
-        btnFlecha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow.png"))); // NOI18N
-        btnFlecha.setText("buttonIcon4");
-        btnFlecha.addActionListener(new java.awt.event.ActionListener() {
+        btnFlechaIzq.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow.png"))); // NOI18N
+        btnFlechaIzq.setText("buttonIcon4");
+        btnFlechaIzq.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFlechaActionPerformed(evt);
+                btnFlechaIzqActionPerformed(evt);
             }
         });
-        getContentPane().add(btnFlecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 400, 40, 30));
+        getContentPane().add(btnFlechaIzq, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, 40, 30));
+
+        btnFlechaDch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow.png"))); // NOI18N
+        btnFlechaDch.setText("buttonIcon4");
+        btnFlechaDch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFlechaDchActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnFlechaDch, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 400, 40, 30));
 
         txtNombre.setBackground(new java.awt.Color(51, 51, 51));
         txtNombre.setForeground(new java.awt.Color(51, 51, 51));
@@ -224,7 +265,7 @@ public class ReservarPista extends javax.swing.JFrame {
         getContentPane().add(btnAyuda, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, -1, -1));
 
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Fondo.jpg"))); // NOI18N
-        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 500));
+        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 700, 500));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -244,20 +285,32 @@ public class ReservarPista extends javax.swing.JFrame {
         tblHecha.setModel(modeloHechaPista2);
     }//GEN-LAST:event_btnPista2ActionPerformed
 
-    private void btnFlechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFlechaActionPerformed
-        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro de que quiere alquilar la pista a esta hora?", "Alquiler", JOptionPane.YES_NO_OPTION);
-        if(resp==0){
-            DefaultTableModel modelo=(DefaultTableModel) tblReserva.getModel();
-            DefaultTableModel modelohecha=(DefaultTableModel)tblHecha.getModel();
-            int selec=tblReserva.getSelectedRow();
-            modelohecha.addRow(new Object[]{modelo.getValueAt(selec, 0),modelo.getValueAt(selec, 1),modelo.getValueAt(selec, 2)});
-            modelo.removeRow(selec);
-            txtNombre.setText("Nombre: Ivan Moreno Quiros");
+    private void btnFlechaIzqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFlechaIzqActionPerformed
+        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro de que quiere borarr la pista a esta hora?", "Alquiler", JOptionPane.YES_NO_OPTION);
+        if (resp == 0) {
+            DefaultTableModel modelo = (DefaultTableModel) tblReserva.getModel();
+            DefaultTableModel modelohecha = (DefaultTableModel) tblHecha.getModel();
+            int selec = tblHecha.getSelectedRow();
+            modelo.addRow(new Object[]{modelo.getValueAt(selec, 0), modelo.getValueAt(selec, 1), modelo.getValueAt(selec, 2)});
+            modelohecha.removeRow(selec);
+            txtNombre.setText("Nombre" + usu.getNombre() + " " + usu.getApellidos());
         }
-        
-    }//GEN-LAST:event_btnFlechaActionPerformed
+    }//GEN-LAST:event_btnFlechaIzqActionPerformed
 
-     /*private void ponLaAyuda() 
+    private void btnFlechaDchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFlechaDchActionPerformed
+        
+        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro de que quiere alquilar la pista a esta hora?", "Alquiler", JOptionPane.YES_NO_OPTION);
+        if (resp == 0) {
+            DefaultTableModel modelo = (DefaultTableModel) tblReserva.getModel();
+            DefaultTableModel modelohecha = (DefaultTableModel) tblHecha.getModel();
+            int selec = tblReserva.getSelectedRow();
+            modelohecha.addRow(new Object[]{modelo.getValueAt(selec, 0), modelo.getValueAt(selec, 1), modelo.getValueAt(selec, 2)});
+            modelo.removeRow(selec);
+            txtNombre.setText("Nombre" + usu.getNombre() + " " + usu.getApellidos());
+        }
+    }//GEN-LAST:event_btnFlechaDchActionPerformed
+
+    /*private void ponLaAyuda() 
     {
         try 
         {
@@ -313,13 +366,6 @@ public class ReservarPista extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ReservarPista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -332,7 +378,8 @@ public class ReservarPista extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Fondo;
     private javax.swing.JButton btnAyuda;
-    private org.edisoncor.gui.button.ButtonIcon btnFlecha;
+    private org.edisoncor.gui.button.ButtonIcon btnFlechaDch;
+    private org.edisoncor.gui.button.ButtonIcon btnFlechaIzq;
     private org.edisoncor.gui.button.ButtonIcon btnPista1;
     private org.edisoncor.gui.button.ButtonIcon btnPista2;
     private org.edisoncor.gui.button.ButtonIcon btnPista3;
@@ -348,10 +395,14 @@ public class ReservarPista extends javax.swing.JFrame {
     private javax.swing.JLabel txtNombre;
     private javax.swing.JLabel txtTusReservas;
     // End of variables declaration//GEN-END:variables
-DefaultTableModel modeloReservaPista1;
-DefaultTableModel modeloReservaPista2;
-DefaultTableModel modeloReservaPista3;
-DefaultTableModel modeloHechaPista1;
-DefaultTableModel modeloHechaPista2;
-DefaultTableModel modeloHechaPista3;
+    ModeloTabla modeloReservaPista1;
+    DefaultTableModel modeloReservaPista2;
+    DefaultTableModel modeloReservaPista3;
+    DefaultTableModel modeloHechaPista1;
+    DefaultTableModel modeloHechaPista2;
+    DefaultTableModel modeloHechaPista3;
+    LocalDate ahora;
+    LocalDate tomorrow;
+    Usuario usu;
+
 }
