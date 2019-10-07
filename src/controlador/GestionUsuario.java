@@ -6,7 +6,6 @@
 package controlador;
 
 import static controlador.Controlador.*;
-import static controlador.MainFlujo.usu;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -55,7 +54,7 @@ public class GestionUsuario implements Protocolo {
 
     public void gestionInsertarUsuario(Usuario usu) {
         try {
-            flujoObjSalida.writeUTF(INSERTAR_USUARIO);
+            flujo_salida.writeUTF(INSERTAR_USUARIO);
             flujoObjSalida.writeObject(usu);
             boolean insertado = flujoObjEntrada.readBoolean();
             if (insertado) {
@@ -70,9 +69,8 @@ public class GestionUsuario implements Protocolo {
 
     public void gestionBorrarUsuario(int id) {
         try {
-            flujoObjSalida.writeUTF(BORRAR_USUARIO);
+            flujo_salida.writeUTF(BORRAR_USUARIO);
             flujoObjSalida.writeObject(id);
-
             if (flujoObjEntrada.readBoolean()) {
                 JOptionPane.showMessageDialog(null, "Se ha borrado");
             } else {

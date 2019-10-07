@@ -62,7 +62,6 @@ public class Controlador implements Protocolo {
             userOn = flujo_entrada.readBoolean();
             if (userOn) {
                 usu = (Usuario) flujoObjEntrada.readObject();
-                JOptionPane.showMessageDialog(null, "Usuario logeado");
             }
         } catch (IOException e) {
             e.printStackTrace();

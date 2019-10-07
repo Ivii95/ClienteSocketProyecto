@@ -196,32 +196,33 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
         usu = f.getUsuario();
         GU.gestionInsertarUsuario(usu);
         agregarFila(usu);
-        cargarTodo();
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        ModificarUsu mf=new ModificarUsu(null,true);
-        int idusu=recogerIdFila();
-        Usuario usu=null;
-        for (int i = 0; i < Usuarios.size(); i++) {
-            if(Usuarios.get(i).getId()==idusu){
-                usu=Usuarios.get(i);
+        if(recogerIdFila()!= -1){
+            ModificarUsu mf=new ModificarUsu(null,true);
+            int idusu=recogerIdFila();
+            Usuario usu=null;
+            for (int i = 0; i < Usuarios.size(); i++) {
+                if(Usuarios.get(i).getId()==idusu){
+                    usu=Usuarios.get(i);
+                }
             }
+            mf.setUsuario(usu);
+            mf.setVisible(rootPaneCheckingEnabled);
+            usu=mf.getUsuario();
+            GU.gestionActualizarUsuario(usu);
+            borrarTodo();
+            cargarTodo();
+        }else{
+            JOptionPane.showMessageDialog(this, "Tienes que seleccionar un usuario", "IMPORTANTE", HEIGHT);
         }
-        mf.setUsuario(usu);
-        mf.setVisible(rootPaneCheckingEnabled);
-        usu=mf.getUsuario();
-        GU.gestionActualizarUsuario(usu);
-        borrarTodo();
-        cargarTodo();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         int id = recogerIdFila();
-        //borrrar de la base de datos.
         GU.gestionBorrarUsuario(id);
         modeloTabla.removeRow(recogerFila());
-        cargarTodo();
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void InformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InformeActionPerformed
@@ -258,7 +259,6 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
     }
 
     private int recogerIdFila() {
-
         int Id = ((int) modeloTabla.getValueAt(tblPrinci.getSelectedRow(), 0));
         return Id;
     }

@@ -21,6 +21,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,7 +105,7 @@ public class Formulario extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Create account");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(810, 600));
         setResizable(false);
 
         jPanel4.setBackground(new java.awt.Color(51, 51, 51));
@@ -402,19 +403,13 @@ public class Formulario extends javax.swing.JDialog {
                         .addComponent(lblUbicacion)
                         .addGap(33, 33, 33)
                         .addComponent(cbxPaises, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblPais, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(cbxDia, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbxMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbxAño, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtCiudad, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                            .addComponent(txtProvincia, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                            .addComponent(txtComunidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                            .addComponent(txtCiudad)
+                            .addComponent(txtProvincia)
+                            .addComponent(txtComunidad, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cbxProvincia, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -424,6 +419,13 @@ public class Formulario extends javax.swing.JDialog {
                         .addComponent(lblUbicacion1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtDomicilio))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(cbxAño, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxDia, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12))
                     .addComponent(lblNombre)
                     .addComponent(lblFechaNacimiento)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -461,12 +463,15 @@ public class Formulario extends javax.swing.JDialog {
                     .addComponent(cbxDia, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxMes, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxAño, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPais, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cbxPaises, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxPaises, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(lblPais, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cbxComunidad, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -501,11 +506,11 @@ public class Formulario extends javax.swing.JDialog {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(5, 5, 5)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
-                .addGap(3, 3, 3)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(291, 291, 291))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
@@ -516,17 +521,16 @@ public class Formulario extends javax.swing.JDialog {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE))
-                        .addGap(5, 5, 5))))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+                        .addGap(5, 5, 5))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 1076, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -562,7 +566,49 @@ public class Formulario extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_btnAceptarMousePressed
-
+    private String sacarMes() {
+        String meses=(String) cbxMes.getSelectedItem();
+        String mes=null;
+        switch (meses) {
+            case "Enero":
+                mes="01";
+                break;
+            case "Febrero":
+                mes="02";
+                break;
+            case "Marzo":
+                mes="03";
+                break;
+            case "Abril": 
+                mes="04";
+                break;
+            case "Mayo":
+                mes="05";
+                break;
+            case "Junio":
+                mes="06";
+                break;
+            case "Julio":
+                mes="07";
+                break;
+            case "Agosto":
+                mes="08";
+                break;
+            case "Septiembre":
+                mes="09";
+                break;
+            case "Octubre":
+                mes="10";
+                break;
+            case "Noviembre":
+                mes="11";
+                break;
+            case "Diciembre":
+                mes="12";
+                break;
+        }
+        return mes;
+    }
     private void btnAceptarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseReleased
         // TODO add your handling code here:
         if (check.isSelected()) {
@@ -571,8 +617,9 @@ public class Formulario extends javax.swing.JDialog {
             if (checkAdmin.isSelected()) {
                 admin = false;
             }
+            
             String pass = new String(txtPass.getPassword());
-            LocalDate fechaNac = LocalDate.parse(cbxAño.getSelectedItem() + "-" + cbxMes.getSelectedItem() + "-" + cbxDia.getSelectedItem());
+            LocalDate fechaNac = LocalDate.parse(cbxAño.getSelectedItem() + "-" + sacarMes() + "-" + cbxDia.getSelectedItem(), DateTimeFormatter.ISO_LOCAL_DATE);
             user = new Usuario(0,
                     txtUser.getText(),
                     pass,
@@ -591,7 +638,7 @@ public class Formulario extends javax.swing.JDialog {
             );
             this.setVisible(false);
         } else {
-            lblCheck.setVisible(true);
+            JOptionPane.showMessageDialog(this, "Tienes que aceptar los terminos y condiciones", "IMPORTANTE", HEIGHT);
         }
     }//GEN-LAST:event_btnAceptarMouseReleased
 
@@ -653,7 +700,7 @@ public class Formulario extends javax.swing.JDialog {
             if (cbxComunidad.getSelectedItem().equals("Asturias")) {
                 cbxProvincia.removeAllItems();
                 cbxProvincia.setVisible(false);
-                cbxProvincia.addItem("Principado de Asturias");
+                cbxProvincia.addItem("Asturias");
             }
             if (cbxComunidad.getSelectedItem().equals("Baleares")) {
                 cbxProvincia.removeAllItems();
@@ -853,7 +900,7 @@ public class Formulario extends javax.swing.JDialog {
                 dias = 31;
                 break;
             case "Febrero":
-                dias = 29;
+                dias = 28;
                 break;
             case "Marzo":
                 dias = 31;
@@ -888,7 +935,11 @@ public class Formulario extends javax.swing.JDialog {
         }
         cbxDia.removeAllItems();
         for (int i = 1; i <= dias; i++) {
+            if(i<10){
+            cbxDia.addItem("0" + i);
+            }else{
             cbxDia.addItem("" + i);
+            }
         }
     }//GEN-LAST:event_cbxDiaFocusGained
 
@@ -1148,9 +1199,13 @@ public class Formulario extends javax.swing.JDialog {
         cbxDia.removeAllItems();
         cbxDia.addItem("Dia");
         for (int i = 1; i <= dias; i++) {
+            if(i<10){
+            cbxDia.addItem("0" + i);
+            }else{
             cbxDia.addItem("" + i);
+            }
         }
-        for (int i = 2018; i >= 1900; i--) {
+        for (int i = 2020; i >= 1900; i--) {
             cbxAño.addItem("" + i);
         }
         btnCancelar.word("Cancelar");
