@@ -144,6 +144,8 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnBorrar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="brnReserva" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="Informe" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnAyuda" min="-2" max="-2" attributes="0"/>
@@ -163,6 +165,7 @@
                       <Component id="btnModificar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnAyuda" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="Informe" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="brnReserva" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -241,6 +244,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InformeActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="brnReserva">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="A&#xf1;adir reserva"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="brnReservaActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

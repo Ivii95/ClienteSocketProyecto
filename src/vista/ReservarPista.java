@@ -13,7 +13,6 @@ import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 import modelo.Alquiler;
-import modelo.ModeloTabla;
 import modelo.Pista;
 import modelo.Usuario;
 
@@ -28,24 +27,110 @@ public class ReservarPista extends javax.swing.JFrame {
      */
     public ReservarPista() {
         initComponents();
-        iniciarObjetos();
+        iniciarModelos();
         iniciarOtrosComponentes();
         setLocationRelativeTo(null);
     }
 
-    public void iniciarOtrosComponentes() {
-        //ponLaAyuda();
+    public void iniciarModelos() {
+        
+        modeloReservaPista1 = new DefaultTableModel(new Object[][]{}, new String[]{
+            "Dia", "Hora Inicio", "Hora Final"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class};
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+        modeloHechaPista1 =new DefaultTableModel(new Object[][]{}, new String[]{
+            "Dia", "Hora Inicio", "Hora Final"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class};
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+        modeloReservaPista2 =new DefaultTableModel(new Object[][]{}, new String[]{
+            "Dia", "Hora Inicio", "Hora Final"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class};
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+        modeloHechaPista2 = new DefaultTableModel(new Object[][]{}, new String[]{
+            "Dia", "Hora Inicio", "Hora Final"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class};
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+        modeloReservaPista3 = new DefaultTableModel(new Object[][]{}, new String[]{
+            "Dia", "Hora Inicio", "Hora Final"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class};
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+        modeloHechaPista3 = new DefaultTableModel(new Object[][]{}, new String[]{
+            "Dia", "Hora Inicio", "Hora Final"}) {
+            Class[] types = new Class[]{java.lang.String.class, java.lang.String.class, java.lang.String.class};
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
     }
 
-    private void iniciarObjetos() {
+    private void iniciarOtrosComponentes() {
         ahora = LocalDate.now();
-        tomorrow= ahora.plus(1, ChronoUnit.DAYS);
-        modeloReservaPista1 = (ModeloTabla) new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
-        modeloHechaPista1 = new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
-        modeloReservaPista2 = new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
-        modeloHechaPista2 = new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
-        modeloReservaPista3 = new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
-        modeloHechaPista3 = new DefaultTableModel(new Object[]{"Dia", "HoraInicio", "HoraFinal"}, 0);
+        tomorrow = ahora.plus(1, ChronoUnit.DAYS);
+        //ponLaAyuda();
+        
         String[] horas_inicios = new String[14];
         String[] horas_finales = new String[14];
         int hora = 9;
@@ -277,7 +362,7 @@ public class ReservarPista extends javax.swing.JFrame {
 
     private void btnPista3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPista3ActionPerformed
         tblReserva.setModel(modeloReservaPista3);
-        tblHecha.setModel(modeloHechaPista2);
+        tblHecha.setModel(modeloHechaPista3);
     }//GEN-LAST:event_btnPista3ActionPerformed
 
     private void btnPista2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPista2ActionPerformed
@@ -298,7 +383,7 @@ public class ReservarPista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFlechaIzqActionPerformed
 
     private void btnFlechaDchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFlechaDchActionPerformed
-        
+
         int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro de que quiere alquilar la pista a esta hora?", "Alquiler", JOptionPane.YES_NO_OPTION);
         if (resp == 0) {
             DefaultTableModel modelo = (DefaultTableModel) tblReserva.getModel();
@@ -395,7 +480,7 @@ public class ReservarPista extends javax.swing.JFrame {
     private javax.swing.JLabel txtNombre;
     private javax.swing.JLabel txtTusReservas;
     // End of variables declaration//GEN-END:variables
-    ModeloTabla modeloReservaPista1;
+    DefaultTableModel modeloReservaPista1;
     DefaultTableModel modeloReservaPista2;
     DefaultTableModel modeloReservaPista3;
     DefaultTableModel modeloHechaPista1;

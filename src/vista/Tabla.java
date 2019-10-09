@@ -50,6 +50,7 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
         btnModificar = new javax.swing.JButton();
         btnAyuda = new javax.swing.JButton();
         Informe = new javax.swing.JButton();
+        brnReserva = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -138,6 +139,13 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
             }
         });
 
+        brnReserva.setText("Añadir reserva");
+        brnReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brnReservaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -151,6 +159,8 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
                 .addGap(18, 18, 18)
                 .addComponent(btnBorrar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(brnReserva)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Informe)
                 .addGap(18, 18, 18)
                 .addComponent(btnAyuda)
@@ -167,7 +177,8 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
                     .addComponent(btnBorrar)
                     .addComponent(btnModificar)
                     .addComponent(btnAyuda)
-                    .addComponent(Informe))
+                    .addComponent(Informe)
+                    .addComponent(brnReserva))
                 .addContainerGap())
         );
 
@@ -228,6 +239,13 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
     private void InformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InformeActionPerformed
         startReport();
     }//GEN-LAST:event_InformeActionPerformed
+
+    private void brnReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brnReservaActionPerformed
+        Usuario usuarioRecogido=recogerFilaEntera(tblPrinci.getSelectedRow());
+        ReservarPista RP=new ReservarPista();
+        RP.usu=usuarioRecogido;
+        RP.setVisible(true);
+    }//GEN-LAST:event_brnReservaActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -351,6 +369,7 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Informe;
     private javax.swing.JLabel Titulo;
+    private javax.swing.JButton brnReserva;
     private javax.swing.JButton btnAyuda;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnInsertar;
