@@ -317,7 +317,9 @@ public class ReservarPista extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 370, 310, 130));
 
-        btnFlechaIzq.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow.png"))); // NOI18N
+        btnFlechaIzq.setBackground(new java.awt.Color(102, 102, 102));
+        btnFlechaIzq.setForeground(new java.awt.Color(102, 102, 102));
+        btnFlechaIzq.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/izquierda.png"))); // NOI18N
         btnFlechaIzq.setText("buttonIcon4");
         btnFlechaIzq.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -326,7 +328,9 @@ public class ReservarPista extends javax.swing.JFrame {
         });
         getContentPane().add(btnFlechaIzq, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, 40, 30));
 
-        btnFlechaDch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow.png"))); // NOI18N
+        btnFlechaDch.setBackground(new java.awt.Color(102, 102, 102));
+        btnFlechaDch.setForeground(new java.awt.Color(102, 102, 102));
+        btnFlechaDch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/derecha.png"))); // NOI18N
         btnFlechaDch.setText("buttonIcon4");
         btnFlechaDch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

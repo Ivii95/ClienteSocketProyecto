@@ -7,6 +7,7 @@ package vista;
 
 
 import controlador.GestionUsuario;
+import controlador.UtilidadesPantalla;
 import modelo.*;
 
 import java.io.File;
@@ -27,7 +28,8 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
      */
     public Tabla(java.awt.Frame parent, boolean modal) {
         initComponents();
-        setLocationRelativeTo(null);
+        UtilidadesPantalla.resolucionPantalla(this);
+        ponLaAyuda();
         modeloTabla=(DefaultTableModel) tblPrinci.getModel();
         cargarTodo();
     }
@@ -45,6 +47,7 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
         tblPrinci = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         Titulo = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         btnInsertar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
@@ -53,9 +56,15 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
         brnReserva = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(204, 255, 204));
+        setMaximumSize(new java.awt.Dimension(1366, 768));
+        setMinimumSize(new java.awt.Dimension(1366, 768));
+        setPreferredSize(new java.awt.Dimension(1366, 768));
         setResizable(false);
+        setSize(new java.awt.Dimension(1366, 768));
 
         jScrollPane1.setBackground(new java.awt.Color(204, 255, 204));
+        jScrollPane1.setForeground(new java.awt.Color(204, 255, 204));
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setToolTipText("");
         jScrollPane1.setFocusable(false);
@@ -96,14 +105,30 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 204));
 
-        Titulo.setFont(new java.awt.Font("Laksaman", 1, 24)); // NOI18N
-        Titulo.setForeground(new java.awt.Color(0, 0, 0));
+        Titulo.setFont(new java.awt.Font("Agency FB", 1, 36)); // NOI18N
+        Titulo.setForeground(new java.awt.Color(102, 102, 102));
         Titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Titulo.setText("Administrador de usuarios");
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jPanel2.setBackground(new java.awt.Color(204, 255, 204));
+
         btnInsertar.setBackground(new java.awt.Color(255, 255, 204));
         btnInsertar.setFont(new java.awt.Font("Laksaman", 1, 12)); // NOI18N
-        btnInsertar.setText("Insertar");
+        btnInsertar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/añadir.png"))); // NOI18N
+        btnInsertar.setText(" Insertar usuario");
         btnInsertar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInsertarActionPerformed(evt);
@@ -112,6 +137,7 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
 
         btnBorrar.setBackground(new java.awt.Color(255, 255, 204));
         btnBorrar.setFont(new java.awt.Font("Laksaman", 1, 12)); // NOI18N
+        btnBorrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/borrar.png"))); // NOI18N
         btnBorrar.setText("Borrar");
         btnBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,7 +147,10 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
 
         btnModificar.setBackground(new java.awt.Color(255, 255, 204));
         btnModificar.setFont(new java.awt.Font("Laksaman", 1, 12)); // NOI18N
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/modificar.png"))); // NOI18N
         btnModificar.setText("Modificar");
+        btnModificar.setMaximumSize(new java.awt.Dimension(120, 40));
+        btnModificar.setMinimumSize(new java.awt.Dimension(120, 40));
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
@@ -146,56 +175,66 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnInsertar)
-                .addGap(18, 18, 18)
-                .addComponent(btnModificar)
-                .addGap(18, 18, 18)
-                .addComponent(btnBorrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(500, 500, 500)
                 .addComponent(brnReserva)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(31, 31, 31)
                 .addComponent(Informe)
                 .addGap(18, 18, 18)
                 .addComponent(btnAyuda)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addContainerGap(514, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addContainerGap()
                     .addComponent(btnInsertar)
+                    .addGap(18, 18, 18)
+                    .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
                     .addComponent(btnBorrar)
-                    .addComponent(btnModificar)
-                    .addComponent(btnAyuda)
+                    .addContainerGap(981, Short.MAX_VALUE)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(47, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(brnReserva)
                     .addComponent(Informe)
-                    .addComponent(brnReserva))
-                .addContainerGap())
+                    .addComponent(btnAyuda))
+                .addGap(40, 40, 40))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(34, 34, 34)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnInsertar)
+                        .addComponent(btnBorrar)
+                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(45, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 965, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -295,8 +334,7 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
     private void ponLaAyuda() {
         try {
             // Carga el fichero de ayuda
-            java.io.File fichero = new java.io.File("lib" + File.separator + "help" + java.io.File.separator + "help_set.hs");
-            java.net.URL hsURL = fichero.toURI().toURL();
+            java.net.URL hsURL=UtilidadesPantalla.obtenerUrlAyuda();
 
             //ClassLoader cl = Examen20171122.class.getClassLoader();
             //java.net.URL hsURL = HelpSet.findHelpSet(cl,"help\\help_set.hs");
@@ -306,11 +344,8 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
             HelpBroker hb = helpset.createHelpBroker();
 
             // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
-            // principal y secundaria.
-            hb.enableHelpOnButton(btnAyuda, "Control", helpset);
-            hb.enableHelpKey(getRootPane(), "Control", helpset);
-
-            //hb.enableHelpOnButton(jButton2, "ventana_secundaria", helpset);
+            hb.enableHelpOnButton(btnAyuda, "tabla", helpset);
+            hb.enableHelpKey(getRootPane(), "tabla", helpset);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -375,6 +410,7 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
     private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblPrinci;
     // End of variables declaration//GEN-END:variables
@@ -382,10 +418,14 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
         modeloTabla.setRowCount(0);
     }
     private void cargarTodo() {
+        try{
         Usuarios=GU.gestionListarUsuarios();
         for (int i = 0; i < Usuarios.size(); i++) {
             Usuario usu=Usuarios.get(i);
             agregarFila(usu);
+        }
+        }catch(Exception e){
+            System.out.println("Error al cargar la tabla");
         }
     }
     public void startReport() {
