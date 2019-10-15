@@ -5,12 +5,9 @@
  */
 package Vistas;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 import Modelos.Alquiler;
 import Modelos.Pista;
@@ -160,6 +157,7 @@ public class ReservarPista extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Titulo = new javax.swing.JPanel();
         labelHeader1 = new org.edisoncor.gui.label.LabelHeader();
         jPanel1 = new javax.swing.JPanel();
         btnPista1 = new org.edisoncor.gui.button.ButtonIcon();
@@ -181,12 +179,30 @@ public class ReservarPista extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 204));
-        setMinimumSize(new java.awt.Dimension(700, 500));
+        setMaximumSize(new java.awt.Dimension(1360, 762));
+        setMinimumSize(new java.awt.Dimension(1360, 762));
+        setPreferredSize(new java.awt.Dimension(1360, 762));
+        setResizable(false);
+        setSize(new java.awt.Dimension(1360, 762));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelHeader1.setText("Reserva tu pista");
         labelHeader1.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
-        getContentPane().add(labelHeader1, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, -3, 690, 80));
+
+        javax.swing.GroupLayout TituloLayout = new javax.swing.GroupLayout(Titulo);
+        Titulo.setLayout(TituloLayout);
+        TituloLayout.setHorizontalGroup(
+            TituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(labelHeader1, javax.swing.GroupLayout.DEFAULT_SIZE, 1360, Short.MAX_VALUE)
+        );
+        TituloLayout.setVerticalGroup(
+            TituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TituloLayout.createSequentialGroup()
+                .addComponent(labelHeader1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(Titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 0, 1360, -1));
 
         btnPista1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pistaPadelModularVerde.jpg"))); // NOI18N
         btnPista1.setText("buttonIcon1");
@@ -223,21 +239,22 @@ public class ReservarPista extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnPista1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnPista3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnPista2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(54, 54, 54)
-                .addComponent(jLabel1)
-                .addGap(108, 108, 108)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(56, 56, 56))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnPista1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnPista3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnPista2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(jLabel1)
+                        .addGap(108, 108, 108)
+                        .addComponent(jLabel2)
+                        .addGap(108, 108, 108)
+                        .addComponent(jLabel3)))
+                .addContainerGap(922, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,13 +267,13 @@ public class ReservarPista extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnPista2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnPista3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnPista3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnPista1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, -1, 110));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 90, 1360, 110));
 
         tblReserva.setBackground(new java.awt.Color(204, 255, 204));
         tblReserva.setForeground(new java.awt.Color(102, 102, 102));
@@ -292,7 +309,7 @@ public class ReservarPista extends javax.swing.JFrame {
             tblReserva.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 330, 280));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 690, 460));
 
         tblHecha.setBackground(new java.awt.Color(204, 255, 204));
         tblHecha.setModel(new javax.swing.table.DefaultTableModel(
@@ -315,7 +332,7 @@ public class ReservarPista extends javax.swing.JFrame {
         tblHecha.setSelectionForeground(new java.awt.Color(102, 255, 255));
         jScrollPane2.setViewportView(tblHecha);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 370, 310, 130));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 510, 590, 250));
 
         btnFlechaIzq.setBackground(new java.awt.Color(102, 102, 102));
         btnFlechaIzq.setForeground(new java.awt.Color(102, 102, 102));
@@ -326,7 +343,7 @@ public class ReservarPista extends javax.swing.JFrame {
                 btnFlechaIzqActionPerformed(evt);
             }
         });
-        getContentPane().add(btnFlechaIzq, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, 40, 30));
+        getContentPane().add(btnFlechaIzq, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 720, 40, 30));
 
         btnFlechaDch.setBackground(new java.awt.Color(102, 102, 102));
         btnFlechaDch.setForeground(new java.awt.Color(102, 102, 102));
@@ -337,24 +354,27 @@ public class ReservarPista extends javax.swing.JFrame {
                 btnFlechaDchActionPerformed(evt);
             }
         });
-        getContentPane().add(btnFlechaDch, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 400, 40, 30));
+        getContentPane().add(btnFlechaDch, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 670, 40, 30));
 
         txtNombre.setBackground(new java.awt.Color(51, 51, 51));
         txtNombre.setForeground(new java.awt.Color(51, 51, 51));
         txtNombre.setText("Nombre: ");
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 250, -1, -1));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 400, -1, -1));
 
         txtTusReservas.setBackground(new java.awt.Color(51, 51, 51));
         txtTusReservas.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         txtTusReservas.setForeground(new java.awt.Color(51, 51, 51));
         txtTusReservas.setText("Tus reservas:");
-        getContentPane().add(txtTusReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 220, -1, -1));
+        getContentPane().add(txtTusReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 370, -1, -1));
 
         btnAyuda.setText("Ayuda");
-        getContentPane().add(btnAyuda, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, -1, -1));
+        getContentPane().add(btnAyuda, new org.netbeans.lib.awtextra.AbsoluteConstraints(1290, 200, 70, -1));
 
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Fondo.jpg"))); // NOI18N
-        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 700, 500));
+        Fondo.setMaximumSize(new java.awt.Dimension(1360, 762));
+        Fondo.setMinimumSize(new java.awt.Dimension(1360, 762));
+        Fondo.setPreferredSize(new java.awt.Dimension(1360, 762));
+        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -466,6 +486,7 @@ public class ReservarPista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Fondo;
+    private javax.swing.JPanel Titulo;
     private javax.swing.JButton btnAyuda;
     private org.edisoncor.gui.button.ButtonIcon btnFlechaDch;
     private org.edisoncor.gui.button.ButtonIcon btnFlechaIzq;
