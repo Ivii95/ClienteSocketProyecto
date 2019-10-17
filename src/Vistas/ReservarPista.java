@@ -27,7 +27,7 @@ public class ReservarPista extends javax.swing.JFrame {
      * Creates new form Principal
      */
     public ReservarPista(Usuario usu) {
-        this.usu = usu;
+        this.usuarioReservar = usu;
         initComponents();
         rellenarTablas();
         //iniciarOtrosComponentes();
@@ -82,7 +82,7 @@ public class ReservarPista extends javax.swing.JFrame {
                     modeloReservaHecha = GP.getModeloReservaHecha(pistas.get(i).getNum(), alquileres);
 
                     tblReserva.setModel(modeloReserva);
-                    tblHecha.setModel(modeloReserva);
+                    tblHecha.setModel(modeloReservaHecha);
                 }
             }
         }
@@ -409,7 +409,7 @@ public class ReservarPista extends javax.swing.JFrame {
     ArrayList<Pista> pistas = new ArrayList<>();
     GestionPistas GP = new GestionPistas();
     GestionAlquiler GA = new GestionAlquiler();
-    Usuario usu = new Usuario();
+    Usuario usuarioReservar;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Fondo;
     private javax.swing.JPanel Titulo;

@@ -8,9 +8,6 @@ package Modelos;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-
-    
-
 public class Usuario implements Serializable{
     private int id;
     private String usuario;

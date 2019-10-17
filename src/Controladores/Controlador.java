@@ -5,8 +5,6 @@
  */
 package Controladores;
 
-import static Controladores.MainFlujo.userOn;
-import static Controladores.MainFlujo.usu;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -59,13 +57,13 @@ public class Controlador implements Protocolo {
             //Le envio el usuario
             flujo_salida.writeUTF(usuario);
             //Codifico la contraseña
-            pass=encriptaEnMD5(pass);
+            //pass=encriptaEnMD5(pass);
             //Le envio la contraseña
             flujo_salida.writeUTF(pass);
             //Espero confirmacion y la guardo en userOn
-            userOn = flujo_entrada.readBoolean();
-            if (userOn) {
-                usu = (Usuario) flujoObjEntrada.readObject();
+            MainFlujo.userOn = flujo_entrada.readBoolean();
+            if (MainFlujo.userOn) {
+                MainFlujo.usuarioRegistrado = (Usuario) flujoObjEntrada.readObject();
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -15,18 +15,17 @@ import Vistas.Tabla;
  */
 public class MainFlujo {
     //Usuario que usa la app
-    public static Usuario usu;
+    public static Usuario usuarioRegistrado;
     public static boolean userOn = false;
     public static void main(String args[]) {
         //Inicio del programa y declaracion de variables
         Controlador ctrl=new Controlador();
         ctrl.inicializarConexiones();
-        
         do {
             ctrl.gestionLOG();
         } while (!userOn);
         
-        if (usu.getAdmin()) {
+        if (usuarioRegistrado.getAdmin()) {
             Tabla tbl=new Tabla(null,true);
             tbl.setVisible(true);
         }else{

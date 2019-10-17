@@ -53,7 +53,7 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
         Informe = new javax.swing.JButton();
         brnReserva = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 204));
         setMinimumSize(new java.awt.Dimension(1366, 768));
         setResizable(false);
@@ -78,14 +78,22 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
                 "ID", "Nombre", "Apellidos", "Usuario", "Domicilio", "Telefono"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tblPrinci.setToolTipText("");
         tblPrinci.setGridColor(new java.awt.Color(51, 51, 51));
         tblPrinci.setSelectionForeground(new java.awt.Color(51, 255, 255));
         jScrollPane1.setViewportView(tblPrinci);
@@ -295,12 +303,12 @@ public class Tabla extends javax.swing.JFrame implements Protocolo {
 
     private Usuario recogerFilaEntera(int i) {
         Usuario u = new Usuario();
-        u.setId((int) modeloTabla.getValueAt(i, 1));
-        u.setNombre((String) modeloTabla.getValueAt(i, 2));
-        u.setApellidos((String) modeloTabla.getValueAt(i, 3));
-        u.setUsuario((String) modeloTabla.getValueAt(i, 4));
-        u.setContrasena((String) modeloTabla.getValueAt(i, 5));
-        u.setTlf((int) modeloTabla.getValueAt(i, 6));
+        u.setId((int) modeloTabla.getValueAt(i, 0));
+        u.setNombre((String) modeloTabla.getValueAt(i, 1));
+        u.setApellidos((String) modeloTabla.getValueAt(i, 2));
+        u.setUsuario((String) modeloTabla.getValueAt(i, 3));
+        u.setContrasena((String) modeloTabla.getValueAt(i, 4));
+        u.setTlf((int) modeloTabla.getValueAt(i, 5));
 
         /*u.setCorreoRecuperacion((String) modeloTabla.getValueAt(i, 2));
         u.setSexo((String) modeloTabla.getValueAt(i, 5));
