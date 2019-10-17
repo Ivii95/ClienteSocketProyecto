@@ -30,7 +30,7 @@ public class GestionUsuario implements Protocolo {
             flujo_salida.writeUTF(LISTAR_USUARIO);
             flujo_salida.writeUTF(id+"");
             usu = (Usuario) flujoObjEntrada.readObject();
-
+            
         } catch (ClassNotFoundException e) {
             System.out.println("Error al obtener la clase al listar");
         } catch (IOException e) {
