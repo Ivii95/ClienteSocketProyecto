@@ -13,6 +13,9 @@ import javax.swing.table.DefaultTableModel;
 import Modelos.Alquiler;
 import Modelos.Pista;
 import Modelos.Usuario;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
@@ -29,67 +32,39 @@ public class ReservarPista extends javax.swing.JFrame {
     public ReservarPista(Usuario usu) {
         this.usuarioReservar = usu;
         initComponents();
+        //Cargamos las listas de las pistas y de los alquileres obtenidos
+        alquileres = GA.gestionListarAlquileres();
+        pistas = GP.gestionListarPistas();
+        pistaSeleccionada = pistas.get(0);
+        //luego creamos un modelo para cada pista obtenida
+        GP.crearPistas();
+        //y para terminar rellenamos todas las tablas
         rellenarTablas();
         //iniciarOtrosComponentes();
         ponLaAyuda();
         UtilidadesPantalla.resolucionPantalla(this);
-        GA.cargarHorasDelDia();
-        GP.crearPistas();
+        txtNombre.setText("Nombre: " + usuarioReservar.getNombre() + " " + usuarioReservar.getApellidos());
     }
 
-
-    /* private void iniciarOtrosComponentes() {
-        int hora = 9;
-        modeloReservaPista1.addRow(new Object[]{"----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------"});
-        modeloReservaPista2.addRow(new Object[]{"----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------"});
-        modeloReservaPista3.addRow(new Object[]{"----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------"});
-        for (int i = 0; i < 14; i++) {
-            if (hora < 10) {
-                horas_inicios[i] = LocalTime.parse("0" + hora + ":00", formatter);
-                hora++;
-                horas_finales[i] = LocalTime.parse(hora + ":00", formatter);
-            } else {
-                horas_inicios[i] = LocalTime.parse(hora + ":00", formatter);
-                hora++;
-                horas_finales[i] = LocalTime.parse(hora + ":00", formatter);
-            }
-            modeloReservaPista1.addRow(new Object[]{GA.ahora, horas_inicios[i], horas_finales[i]});
-            modeloReservaPista2.addRow(new Object[]{GA.ahora, horas_inicios[i], horas_finales[i]});
-            modeloReservaPista3.addRow(new Object[]{GA.ahora, horas_inicios[i], horas_finales[i]});
-        }
-        modeloReservaPista1.addRow(new Object[]{"----------------- " + GA.tomorrow + " -----------------", "----------------- " + GA.tomorrow + " -----------------", "----------------- " + GA.tomorrow + " -----------------"});
-        modeloReservaPista2.addRow(new Object[]{"----------------- " + GA.tomorrow + " -----------------", "----------------- " + GA.tomorrow + " -----------------", "----------------- " + GA.tomorrow + " -----------------"});
-        modeloReservaPista3.addRow(new Object[]{"----------------- " + GA.tomorrow + " -----------------", "----------------- " + GA.tomorrow + " -----------------", "----------------- " + GA.tomorrow + " -----------------"});
-        for (int i = 0; i < 14; i++) {
-            modeloReservaPista1.addRow(new Object[]{GA.tomorrow, horas_inicios[i], horas_finales[i]});
-            modeloReservaPista2.addRow(new Object[]{GA.tomorrow, horas_inicios[i], horas_finales[i]});
-            modeloReservaPista3.addRow(new Object[]{GA.tomorrow, horas_inicios[i], horas_finales[i]});
-        }
-        tblReserva.setModel(modeloReservaPista1);
-        tblHecha.setModel(modeloHechaPista1);
-        rellenarTablas();
-    }*/
     private void rellenarTablas() {
-        alquileres = GA.gestionListarAlquileres();
-        pistas = GP.gestionListarPistas();
-        DefaultTableModel modeloReserva;
-        DefaultTableModel modeloReservaHecha;
-        int hora = 9;
-        for (int i = 0; i < pistas.size(); i++) {
-            for (int j = 0; j < alquileres.size(); j++) {
-                if (alquileres.get(j).p.getNum() == pistas.get(i).getNum()) {
-                    modeloReserva = GP.getModeloReserva(pistas.get(i).getNum(), alquileres);
-                    modeloReservaHecha = GP.getModeloReservaHecha(pistas.get(i).getNum(), alquileres);
-
-                    tblReserva.setModel(modeloReserva);
-                    tblHecha.setModel(modeloReservaHecha);
+        DefaultTableModel modeloReserva = (DefaultTableModel) tblReserva.getModel();
+        DefaultTableModel modeloReservaHecha = (DefaultTableModel) tblHecha.getModel();
+        for (int j = 0; j < alquileres.size(); j++) {
+            if (alquileres.get(j).p.getNum() == pistaSeleccionada.getNum()) {
+                modeloReserva = GP.getModeloReserva(pistaSeleccionada.getNum(), alquileres);
+                if (alquileres.get(j).getUsu().getId() == usuarioReservar.getId()) {
+                    modeloReservaHecha = GP.getModeloReservaHecha(pistaSeleccionada.getNum(), alquileres);
                 }
             }
         }
+        tblReserva.setModel(modeloReserva);
+        tblHecha.setModel(modeloReservaHecha);
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -99,8 +74,8 @@ public class ReservarPista extends javax.swing.JFrame {
         labelHeader1 = new org.edisoncor.gui.label.LabelHeader();
         jPanel1 = new javax.swing.JPanel();
         btnPista1 = new org.edisoncor.gui.button.ButtonIcon();
-        btnPista2 = new org.edisoncor.gui.button.ButtonIcon();
         btnPista3 = new org.edisoncor.gui.button.ButtonIcon();
+        btnPista2 = new org.edisoncor.gui.button.ButtonIcon();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -111,11 +86,12 @@ public class ReservarPista extends javax.swing.JFrame {
         btnFlechaIzq = new org.edisoncor.gui.button.ButtonIcon();
         btnFlechaDch = new org.edisoncor.gui.button.ButtonIcon();
         txtNombre = new javax.swing.JLabel();
+        txtPista = new javax.swing.JLabel();
         txtTusReservas = new javax.swing.JLabel();
         btnAyuda = new javax.swing.JButton();
         Fondo = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 204));
         setMaximumSize(new java.awt.Dimension(1360, 762));
         setMinimumSize(new java.awt.Dimension(1360, 762));
@@ -124,8 +100,12 @@ public class ReservarPista extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1360, 762));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        labelHeader1.setBackground(new java.awt.Color(204, 255, 204));
+        labelHeader1.setForeground(new java.awt.Color(0, 102, 0));
         labelHeader1.setText("Reserva tu pista");
-        labelHeader1.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        labelHeader1.setColor(new java.awt.Color(204, 255, 204));
+        labelHeader1.setColorDeSombra(new java.awt.Color(204, 255, 204));
+        labelHeader1.setFont(new java.awt.Font("Agency FB", 1, 48)); // NOI18N
 
         javax.swing.GroupLayout TituloLayout = new javax.swing.GroupLayout(Titulo);
         Titulo.setLayout(TituloLayout);
@@ -142,6 +122,8 @@ public class ReservarPista extends javax.swing.JFrame {
 
         getContentPane().add(Titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 0, 1360, -1));
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         btnPista1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pistaPadelModularVerde.jpg"))); // NOI18N
         btnPista1.setText("buttonIcon1");
         btnPista1.addActionListener(new java.awt.event.ActionListener() {
@@ -150,19 +132,19 @@ public class ReservarPista extends javax.swing.JFrame {
             }
         });
 
-        btnPista2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pistaPadelModularVerde.jpg"))); // NOI18N
-        btnPista2.setText("buttonIcon2");
-        btnPista2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPista2ActionPerformed(evt);
-            }
-        });
-
         btnPista3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pistaPadelModularVerde.jpg"))); // NOI18N
-        btnPista3.setText("buttonIcon3");
+        btnPista3.setText("buttonIcon2");
         btnPista3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPista3ActionPerformed(evt);
+            }
+        });
+
+        btnPista2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pistaPadelModularVerde.jpg"))); // NOI18N
+        btnPista2.setText("buttonIcon3");
+        btnPista2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPista2ActionPerformed(evt);
             }
         });
 
@@ -182,9 +164,9 @@ public class ReservarPista extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(btnPista1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPista3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPista2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPista2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnPista3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(54, 54, 54)
                         .addComponent(jLabel1)
@@ -192,7 +174,7 @@ public class ReservarPista extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addGap(108, 108, 108)
                         .addComponent(jLabel3)))
-                .addContainerGap(922, Short.MAX_VALUE))
+                .addContainerGap(918, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,14 +186,14 @@ public class ReservarPista extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnPista2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPista3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnPista3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPista2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnPista1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 90, 1360, 110));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 90, 1360, 120));
 
         tblReserva.setBackground(new java.awt.Color(204, 255, 204));
         tblReserva.setForeground(new java.awt.Color(0, 102, 102));
@@ -223,21 +205,15 @@ public class ReservarPista extends javax.swing.JFrame {
                 "Dia", "Hora Inicio", "Hora Final"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tblReserva.setRowHeight(20);
         tblReserva.setSelectionForeground(new java.awt.Color(102, 255, 255));
         jScrollPane1.setViewportView(tblReserva);
         if (tblReserva.getColumnModel().getColumnCount() > 0) {
@@ -266,6 +242,7 @@ public class ReservarPista extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblHecha.setRowHeight(50);
         tblHecha.setSelectionForeground(new java.awt.Color(102, 255, 255));
         jScrollPane2.setViewportView(tblHecha);
 
@@ -294,18 +271,26 @@ public class ReservarPista extends javax.swing.JFrame {
         getContentPane().add(btnFlechaDch, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 570, 40, 30));
 
         txtNombre.setBackground(new java.awt.Color(51, 51, 51));
+        txtNombre.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         txtNombre.setForeground(new java.awt.Color(51, 51, 51));
         txtNombre.setText("Nombre: ");
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 400, -1, -1));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 450, -1, -1));
+
+        txtPista.setBackground(new java.awt.Color(51, 51, 51));
+        txtPista.setFont(new java.awt.Font("Agency FB", 1, 48)); // NOI18N
+        txtPista.setForeground(new java.awt.Color(51, 51, 51));
+        txtPista.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtPista.setText("Seleccione una pista");
+        getContentPane().add(txtPista, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 680, 160));
 
         txtTusReservas.setBackground(new java.awt.Color(51, 51, 51));
         txtTusReservas.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         txtTusReservas.setForeground(new java.awt.Color(51, 51, 51));
         txtTusReservas.setText("Tus reservas:");
-        getContentPane().add(txtTusReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 370, -1, -1));
+        getContentPane().add(txtTusReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 440, -1, -1));
 
         btnAyuda.setText("Ayuda");
-        getContentPane().add(btnAyuda, new org.netbeans.lib.awtextra.AbsoluteConstraints(1290, 200, 70, -1));
+        getContentPane().add(btnAyuda, new org.netbeans.lib.awtextra.AbsoluteConstraints(1280, 440, 70, -1));
 
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Fondo.jpg"))); // NOI18N
         Fondo.setMaximumSize(new java.awt.Dimension(1360, 762));
@@ -318,42 +303,69 @@ public class ReservarPista extends javax.swing.JFrame {
 
     private void btnPista1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPista1ActionPerformed
         tblReserva.setModel(GP.getModeloReserva(1, alquileres));
-        tblHecha.setModel(GP.getModeloReservaHecha(1, alquileres));
+        for (int j = 0; j < alquileres.size(); j++) {
+            if (alquileres.get(j).getUsu().getId() == usuarioReservar.getId()) {
+                tblHecha.setModel(GP.getModeloReservaHecha(1, alquileres));
+            }
+        }
+        txtPista.setText("1ª Pista");
+        pistaSeleccionada = pistas.get(0);
     }//GEN-LAST:event_btnPista1ActionPerformed
-
-    private void btnPista3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPista3ActionPerformed
-        tblReserva.setModel(GP.getModeloReserva(3, alquileres));
-        tblReserva.setModel(GP.getModeloReservaHecha(3, alquileres));
-    }//GEN-LAST:event_btnPista3ActionPerformed
 
     private void btnPista2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPista2ActionPerformed
         tblReserva.setModel(GP.getModeloReserva(2, alquileres));
-        tblReserva.setModel(GP.getModeloReservaHecha(2, alquileres));
+        for (int j = 0; j < alquileres.size(); j++) {
+            if (alquileres.get(j).getUsu().getId() == usuarioReservar.getId()) {
+                tblHecha.setModel(GP.getModeloReservaHecha(2, alquileres));
+            }
+        }
+        txtPista.setText("2ª Pista");
+        pistaSeleccionada = pistas.get(1);
     }//GEN-LAST:event_btnPista2ActionPerformed
 
+    private void btnPista3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPista3ActionPerformed
+        tblReserva.setModel(GP.getModeloReserva(3, alquileres));
+        for (int j = 0; j < alquileres.size(); j++) {
+            if (alquileres.get(j).getUsu().getId() == usuarioReservar.getId()) {
+                tblHecha.setModel(GP.getModeloReservaHecha(3, alquileres));
+            }
+        }
+        txtPista.setText("3ª Pista");
+        pistaSeleccionada = pistas.get(2);
+    }//GEN-LAST:event_btnPista3ActionPerformed
+
     private void btnFlechaIzqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFlechaIzqActionPerformed
-        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro de que quiere borarr la pista a esta hora?", "Alquiler", JOptionPane.YES_NO_OPTION);
+        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro de que quiere borrar la pista a esta hora?", "Alquiler", JOptionPane.YES_NO_OPTION);
         if (resp == 0) {
+
             DefaultTableModel modelo = (DefaultTableModel) tblReserva.getModel();
             DefaultTableModel modelohecha = (DefaultTableModel) tblHecha.getModel();
             int selec = tblHecha.getSelectedRow();
+            LocalDate dia = (LocalDate) modelo.getValueAt(selec, 0);
+            LocalTime horaInicio = (LocalTime) modelo.getValueAt(selec, 1);
+            LocalTime horaFin = (LocalTime) modelo.getValueAt(selec, 2);
+            borrarAlquiler(dia, horaInicio, horaFin);
             modelo.addRow(new Object[]{modelo.getValueAt(selec, 0), modelo.getValueAt(selec, 1), modelo.getValueAt(selec, 2)});
             modelohecha.removeRow(selec);
-            //txtNombre.setText("Nombre" + usu.getNombre() + " " + usu.getApellidos());
         }
     }//GEN-LAST:event_btnFlechaIzqActionPerformed
 
     private void btnFlechaDchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFlechaDchActionPerformed
 
-        //int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro de que quiere alquilar la pista a esta hora?", "Alquiler", JOptionPane.YES_NO_OPTION);
-        //if (resp == 0) {
-        DefaultTableModel modelo = (DefaultTableModel) tblReserva.getModel();
-        DefaultTableModel modelohecha = (DefaultTableModel) tblHecha.getModel();
-        int selec = tblReserva.getSelectedRow();
-        modelohecha.addRow(new Object[]{modelo.getValueAt(selec, 0), modelo.getValueAt(selec, 1), modelo.getValueAt(selec, 2)});
-        modelo.removeRow(selec);
-        //txtNombre.setText("Nombre" + usu.getNombre() + " " + usu.getApellidos());
-        //}
+        int resp = JOptionPane.showConfirmDialog(null, "¿Esta seguro de que quiere alquilar la pista a esta hora?", "Alquiler", JOptionPane.YES_NO_OPTION);
+        if (resp == 0) {
+            DefaultTableModel modelo = (DefaultTableModel) tblReserva.getModel();
+            DefaultTableModel modelohecha = (DefaultTableModel) tblHecha.getModel();
+            int selec = tblReserva.getSelectedRow();
+            LocalDate dia = (LocalDate) modelo.getValueAt(selec, 0);
+            LocalTime horaInicio = (LocalTime) modelo.getValueAt(selec, 1);
+            LocalTime horaFin = (LocalTime) modelo.getValueAt(selec, 2);
+            Alquiler alquiler = new Alquiler(pistaSeleccionada, usuarioReservar, horaInicio, horaFin, dia);
+            GA.gestionInsertarAlquiler(alquiler);
+            modelohecha.addRow(new Object[]{modelo.getValueAt(selec, 0), modelo.getValueAt(selec, 1), modelo.getValueAt(selec, 2)});
+            modelo.removeRow(selec);
+
+        }
     }//GEN-LAST:event_btnFlechaDchActionPerformed
 
     private void ponLaAyuda() {
@@ -405,11 +417,13 @@ public class ReservarPista extends javax.swing.JFrame {
             }
         });
     }
-    ArrayList<Alquiler> alquileres = new ArrayList<>();
-    ArrayList<Pista> pistas = new ArrayList<>();
+    ArrayList<Alquiler> alquileres;
+    public ArrayList<Pista> pistas;
     GestionPistas GP = new GestionPistas();
     GestionAlquiler GA = new GestionAlquiler();
     Usuario usuarioReservar;
+    Pista pistaSeleccionada;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Fondo;
     private javax.swing.JPanel Titulo;
@@ -429,7 +443,20 @@ public class ReservarPista extends javax.swing.JFrame {
     private javax.swing.JTable tblHecha;
     private javax.swing.JTable tblReserva;
     private javax.swing.JLabel txtNombre;
+    private javax.swing.JLabel txtPista;
     private javax.swing.JLabel txtTusReservas;
     // End of variables declaration//GEN-END:variables
+
+    private void borrarAlquiler(LocalDate dia, LocalTime horaInicio, LocalTime horaFin) {
+        int id = 0;
+        for (int i = 0; i < alquileres.size(); i++) {
+            if (alquileres.get(i).getHoraFin().equals(horaFin)
+                    && alquileres.get(i).getHoraInicio().equals(horaInicio)
+                    && alquileres.get(i).getDia().equals(dia)) {
+                id = alquileres.get(i).getId();
+            }
+        }
+        GA.gestionBorrarAlquiler(id);
+    }
 
 }

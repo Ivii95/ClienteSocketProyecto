@@ -8,17 +8,23 @@ package Controladores;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
  * @author DisenoWeb
  */
 public class UtilidadesPantalla {
+
+    public static void resolucionPantallaExterna(JDialog aThis) {
+        aThis.setLocationRelativeTo(null);
+    }
 
     public static void resolucionPantalla(JFrame aThis) {
         aThis.setLocationRelativeTo(null);
@@ -40,7 +46,11 @@ public class UtilidadesPantalla {
         }
         return hsURL;
     }
-    
 
-    
+    public static void centrarTabla(JTable table,int column) {
+        DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+        tcr.setHorizontalAlignment(SwingConstants.CENTER);
+        table.getColumnModel().getColumn(column).setCellRenderer(tcr);
+    }
+
 }

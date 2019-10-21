@@ -5,6 +5,7 @@
  */
 package Vistas;
 
+import Controladores.UtilidadesPantalla;
 import Modelos.Usuario;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
@@ -16,9 +17,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 /**
  *
@@ -42,8 +39,7 @@ public class Formulario extends javax.swing.JDialog {
         initComponents();
         IniciarOtrosComponentes();
         initPlaceHolder();
-        setLocationRelativeTo(null);
-
+        UtilidadesPantalla.resolucionPantallaExterna(this);
     }
 
     /**
@@ -119,12 +115,13 @@ public class Formulario extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(153, 255, 153));
 
-        lblTitulo.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
+        lblTitulo.setFont(new java.awt.Font("Agency FB", 1, 48)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Crea tu cuenta de Usuario");
 
         btnAyuda.setBackground(new java.awt.Color(255, 255, 204));
+        btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ayuda .png"))); // NOI18N
         btnAyuda.setText("Ayuda");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -144,7 +141,7 @@ public class Formulario extends javax.swing.JDialog {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 59, Short.MAX_VALUE)
+                .addGap(0, 66, Short.MAX_VALUE)
                 .addComponent(btnAyuda))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -157,7 +154,7 @@ public class Formulario extends javax.swing.JDialog {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 450));
 
-        lblTituloCuenta.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        lblTituloCuenta.setFont(new java.awt.Font("Agency FB", 1, 36)); // NOI18N
         lblTituloCuenta.setForeground(new java.awt.Color(0, 0, 0));
         lblTituloCuenta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTituloCuenta.setText("Cuenta");
@@ -253,7 +250,7 @@ public class Formulario extends javax.swing.JDialog {
                             .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(78, 78, 78)
+                .addGap(50, 50, 50)
                 .addComponent(lblCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -261,7 +258,7 @@ public class Formulario extends javax.swing.JDialog {
         jPanel3.setBackground(new java.awt.Color(204, 255, 204));
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        lblTituloPersonal.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        lblTituloPersonal.setFont(new java.awt.Font("Agency FB", 1, 36)); // NOI18N
         lblTituloPersonal.setForeground(new java.awt.Color(0, 0, 0));
         lblTituloPersonal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTituloPersonal.setText("Datos personales");
@@ -445,9 +442,9 @@ public class Formulario extends javax.swing.JDialog {
                     .addComponent(cbxAño, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTlf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblUbicacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblUbicacion1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPais, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -499,7 +496,7 @@ public class Formulario extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Agency FB", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Requisitos");
@@ -531,7 +528,7 @@ public class Formulario extends javax.swing.JDialog {
                 .addComponent(check)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(checkAdmin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAceptar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -554,11 +551,11 @@ public class Formulario extends javax.swing.JDialog {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -588,7 +585,6 @@ public class Formulario extends javax.swing.JDialog {
         // TODO add your handling code here:
         btnCancelar.pulse();
         this.setVisible(false);
-        System.exit(0);
     }//GEN-LAST:event_btnCancelarMouseReleased
 
     private void btnAceptarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMousePressed
@@ -1066,22 +1062,13 @@ public class Formulario extends javax.swing.JDialog {
     private void ponLaAyuda() {
         try {
             // Carga el fichero de ayuda
-            java.io.File fichero = new java.io.File("lib" + File.separator + "help" + java.io.File.separator + "help_set.hs");
-            java.net.URL hsURL = fichero.toURI().toURL();
-
-            //ClassLoader cl = Examen20171122.class.getClassLoader();
-            //java.net.URL hsURL = HelpSet.findHelpSet(cl,"help\\help_set.hs");
-            //HelpSet hs = new HelpSet(null, hsURL);
-            // Crea el HelpSet y el HelpBroker
+            java.net.URL hsURL = UtilidadesPantalla.obtenerUrlAyuda();
             HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
             HelpBroker hb = helpset.createHelpBroker();
 
             // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
-            // principal y secundaria.
-            hb.enableHelpOnButton(btnAyuda, "Formulario", helpset);
-            hb.enableHelpKey(getRootPane(), "Formulario", helpset);
-
-            //hb.enableHelpOnButton(jButton2, "ventana_secundaria", helpset);
+            hb.enableHelpOnButton(btnAyuda, "formulario", helpset);
+            hb.enableHelpKey(getRootPane(), "formulario", helpset);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1130,7 +1117,7 @@ public class Formulario extends javax.swing.JDialog {
     }
     ArrayList paises;
     ArrayList abreviaturas;
-    Usuario user;
+    Usuario user=null;
     private int dias = 31;
     boolean kik = true;
     // Variables declaration - do not modify//GEN-BEGIN:variables

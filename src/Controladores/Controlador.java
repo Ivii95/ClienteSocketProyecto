@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import Modelos.Protocolo;
 import Modelos.Usuario;
 import Vistas.Login;
+import static java.awt.image.ImageObserver.ERROR;
+import java.io.EOFException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -43,8 +45,9 @@ public class Controlador implements Protocolo {
             flujo_entrada=new DataInputStream(skCliente.getInputStream());
             flujo_salida=new DataOutputStream(skCliente.getOutputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error de conexion con el servidor.\nCompruebe su conexion a Internet.", "Logueo", JOptionPane.ERROR_MESSAGE);
         }
+        
     }
 
     public boolean gestionLOG() {

@@ -5,13 +5,10 @@
  */
 package Vistas;
 
+import Controladores.UtilidadesPantalla;
 import Modelos.Usuario;
 import java.time.LocalDate;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
@@ -27,8 +24,8 @@ public class ModificarUsu extends javax.swing.JDialog {
     public ModificarUsu(java.awt.Frame parent, boolean modal) {
         super(parent,modal);
         initComponents();
-        setLocationRelativeTo(null);
-        //ponLaAyuda();
+        UtilidadesPantalla.resolucionPantallaExterna(this);
+        ponLaAyuda();
     }
 
     /**
@@ -77,6 +74,7 @@ public class ModificarUsu extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Modificar");
+        setUndecorated(true);
 
         jPanel2.setBackground(new java.awt.Color(204, 255, 204));
         jPanel2.setLayout(new java.awt.GridBagLayout());
@@ -242,6 +240,11 @@ public class ModificarUsu extends javax.swing.JDialog {
 
         btnCancelar.setBackground(new java.awt.Color(255, 255, 204));
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 14;
@@ -296,35 +299,34 @@ public class ModificarUsu extends javax.swing.JDialog {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
 
-            use.setUsuario(txtnom_usu.getText());
-            use.setContrasena(txtpass.getText());
-            boolean Admin=false;
-            if(checkAdmin.isSelected()){
-                Admin=true;
-            }else{
-                Admin=false;
-            }
-            use.setAdmin(checkAdmin.isSelected());
-            use.setCorreoRecuperacion(txtcorreo.getText());
-            use.setNombre(txtnombre.getText());
-            use.setApellidos(txtapellidos.getText());
-            use.setTlf(Integer.parseInt(txttlf.getText()));
+            usuarioModificar.setUsuario(txtnom_usu.getText());
+            usuarioModificar.setContrasena(txtpass.getText());
+            usuarioModificar.setAdmin(checkAdmin.isSelected());
+            usuarioModificar.setCorreoRecuperacion(txtcorreo.getText());
+            usuarioModificar.setNombre(txtnombre.getText());
+            usuarioModificar.setApellidos(txtapellidos.getText());
+            usuarioModificar.setTlf(Integer.parseInt(txttlf.getText()));
             LocalDate fechaNac=LocalDate.parse(txtfech_nac.getText());
-            use.setNacimiento(fechaNac);
-            use.setPais(txtpais.getText());
-            use.setComunidadAutonoma(txtcomunidad_autonoma.getText());
-            use.setProvincia(txtprovincia.getText());
-            use.setCiudad(txtciudad.getText());
-            use.setDomicilio(txtdomicilio.getText());
+            usuarioModificar.setNacimiento(fechaNac);
+            usuarioModificar.setPais(txtpais.getText());
+            usuarioModificar.setComunidadAutonoma(txtcomunidad_autonoma.getText());
+            usuarioModificar.setProvincia(txtprovincia.getText());
+            usuarioModificar.setCiudad(txtciudad.getText());
+            usuarioModificar.setDomicilio(txtdomicilio.getText());
             setVisible(false);
         
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        usuarioModificar=null;
+        this.setVisible(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public Usuario getUsuario(){
-        return use;
+        return usuarioModificar;
     }
     public void setUsuario(Usuario user){
         txtnom_usu.setText(user.getUsuario());
@@ -345,7 +347,7 @@ public class ModificarUsu extends javax.swing.JDialog {
         txtprovincia.setText(user.getProvincia());
         txtciudad.setText(user.getCiudad());
         txtdomicilio.setText(user.getDomicilio());
-        use=user;
+        usuarioModificar=user;
         
         
     }
@@ -354,24 +356,12 @@ public class ModificarUsu extends javax.swing.JDialog {
         try 
         {
             // Carga el fichero de ayuda
-            java.io.File fichero = new java.io.File("help"+java.io.File.separator+"help_set.hs");
-            java.net.URL hsURL = fichero.toURI().toURL();
-            
-            //ClassLoader cl = Examen20171122.class.getClassLoader();
-            //java.net.URL hsURL = HelpSet.findHelpSet(cl,"help\\help_set.hs");
-            
-            //HelpSet hs = new HelpSet(null, hsURL);
-
-            // Crea el HelpSet y el HelpBroker
+            java.net.URL hsURL = UtilidadesPantalla.obtenerUrlAyuda();
             HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
             HelpBroker hb = helpset.createHelpBroker();
 
             // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
-            // principal y secundaria.
-            hb.enableHelpKey(getRootPane(),"ventana_principal",helpset);
-            
-            
-            //hb.enableHelpOnButton(jButton2, "ventana_secundaria", helpset);
+            hb.enableHelpKey(getRootPane(), "modificar", helpset);
         } 
         catch (Exception e) 
         {
@@ -418,7 +408,7 @@ public class ModificarUsu extends javax.swing.JDialog {
         });
     }
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    private Usuario use;
+    private Usuario usuarioModificar;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel admin;
     private javax.swing.JLabel apellidos;

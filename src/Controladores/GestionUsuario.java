@@ -28,7 +28,7 @@ public class GestionUsuario implements Protocolo {
         Usuario usu=new Usuario();
         try {
             flujo_salida.writeUTF(LISTAR_USUARIO);
-            flujo_salida.writeUTF(id+"");
+            flujo_salida.writeInt(id);
             usu = (Usuario) flujoObjEntrada.readObject();
             
         } catch (ClassNotFoundException e) {
@@ -84,11 +84,8 @@ public class GestionUsuario implements Protocolo {
     public void gestionActualizarUsuario(Usuario usu) {
         try {
             flujo_salida.writeUTF(ACTUALIZAR_USUARIO);
-            JOptionPane.showMessageDialog(null, "Se ha actualizado1");
             flujoObjSalida.writeObject(usu);
-            JOptionPane.showMessageDialog(null, "Se ha actualizado2");
             boolean actualizado = flujo_entrada.readBoolean();
-            JOptionPane.showMessageDialog(null, "Se ha actualizado3");
             if (actualizado) {
                 JOptionPane.showMessageDialog(null, "Se ha actualizado");
             } else {

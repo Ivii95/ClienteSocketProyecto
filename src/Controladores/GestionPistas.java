@@ -7,10 +7,10 @@ package Controladores;
 
 import static Controladores.Controlador.flujoObjEntrada;
 import static Controladores.Controlador.flujoObjSalida;
+import static Controladores.Controlador.flujo_salida;
 import Modelos.Alquiler;
 import Modelos.Pista;
 import Modelos.Protocolo;
-import static Modelos.Protocolo.ACTUALIZAR_ALQUILER;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -25,24 +25,24 @@ import javax.swing.table.DefaultTableModel;
 public class GestionPistas {
 
     ArrayList<Pista> pistas = new ArrayList<>();
-    ArrayList<DefaultTableModel> modeloPistas = new ArrayList<>();
-    ArrayList<DefaultTableModel> modeloPistasAlquiladas = new ArrayList<>();
+    DefaultTableModel modeloPistas;
+    DefaultTableModel modeloPistasAlquiladas;
     GestionAlquiler GA = new GestionAlquiler();
 
     public void crearPistas() {
-        for (int i = 0; i < pistas.size(); i++) {
+        //Primero cargamos las horas del dia de hoy y de mañana para alquilar.
+        GA.cargarHorasDelDia();
+        modeloPistas = crearTabla();
+        modeloPistasAlquiladas = crearTabla();
 
-            modeloPistas.add(crearTabla());
-            modeloPistasAlquiladas.add(crearTabla());
-        }
     }
 
     public DefaultTableModel crearTabla() {
         return new DefaultTableModel(new Object[][]{}, new String[]{
             "Dia", "Hora Inicio", "Hora Final"}) {
-            Class[] types = new Class[]{java.lang.String.class,
-                java.lang.String.class,
-                java.lang.String.class
+            Class[] types = new Class[]{java.lang.Object.class,
+                java.lang.Object.class,
+                java.lang.Object.class
             };
             boolean[] canEdit = new boolean[]{
                 false, false, false
@@ -60,54 +60,75 @@ public class GestionPistas {
     }
 
     public DefaultTableModel getModeloReserva(int tabla, ArrayList<Alquiler> alquileres) {
-        modeloPistas.get(tabla + 1).addRow(new Object[]{"----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------"});
-        for (int i = 0; i < 14; i++) {
-            for (int j = 0; j < alquileres.size(); j++) {
-                if (!alquileres.get(j).horaInicio.equals(GA.horas_inicios[i])) {
-                    modeloPistas.get(tabla + 1).addRow(new Object[]{GA.ahora, GA.horas_inicios[i], GA.horas_finales[i]});
+        modeloPistas.setRowCount(0);
+
+        modeloPistas.addRow(new Object[]{"----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------"});
+        for (int i = 0; i < GA.horas_inicios.length; i++) {
+            if (GA.horas_inicios[i].getHour() > GA.nowTime.getHour()) {//Comprobamos que las horas sean mayor que la actual
+                if (alquileres.isEmpty()) {
+                    modeloPistas.addRow(new Object[]{GA.ahora, GA.horas_inicios[i], GA.horas_finales[i]});
+                } else {
+                    for (int j = 0; j < alquileres.size(); j++) {
+                        if (!alquileres.get(j).horaInicio.equals(GA.horas_inicios[i])) {
+                            modeloPistas.addRow(new Object[]{GA.ahora, GA.horas_inicios[i], GA.horas_finales[i]});
+                            j = alquileres.size();//Hacemos que una vez entre en la condicion se salga para que no se repitan los valores
+                        }
+                    }
                 }
             }
         }
-        modeloPistas.get(tabla + 1).addRow(new Object[]{"----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------"});
-        for (int i = 0; i < 14; i++) {
-            for (int j = 0; j < alquileres.size(); j++) {
-                if (!alquileres.get(j).horaInicio.equals(GA.horas_inicios[i])) {
-                    modeloPistas.get(tabla + 1).addRow(new Object[]{GA.tomorrow, GA.horas_inicios[i], GA.horas_finales[i]});
+        modeloPistas.addRow(new Object[]{"----------------- " + GA.tomorrow + " -----------------", "----------------- " + GA.ahora + " -----------------", "----------------- " + GA.ahora + " -----------------"});
+        for (int i = 0; i < GA.horas_inicios.length; i++) {
+            if (alquileres.isEmpty()) {
+                modeloPistas.addRow(new Object[]{GA.tomorrow, GA.horas_inicios[i], GA.horas_finales[i]});
+            } else {
+                for (int j = 0; j < alquileres.size(); j++) {
+                    if (!alquileres.get(j).horaInicio.equals(GA.horas_inicios[i])) {
+                        modeloPistas.addRow(new Object[]{GA.tomorrow, GA.horas_inicios[i], GA.horas_finales[i]});
+                        j = alquileres.size();//Hacemos que una vez entre en la condicion se salga para que no se repitan los valores
+                    }
                 }
-            }    
+            }
         }
-        return modeloPistas.get(tabla + 1);
+        return modeloPistas;
     }
 
     public DefaultTableModel getModeloReservaHecha(int tabla, ArrayList<Alquiler> alquileres) {
-        for (int i = 0; i < 14; i++) {
-            for (int j = 0; j < alquileres.size(); j++) {
-                if (alquileres.get(j).horaInicio.equals(GA.horas_inicios[i])) {
-                    modeloPistasAlquiladas.get(tabla + 1).addRow(new Object[]{alquileres.get(j).dia, alquileres.get(j).horaInicio, alquileres.get(j).horaFin});
+        modeloPistasAlquiladas.setRowCount(0);
+        for (int i = 0; i < GA.horas_inicios.length; i++) {
+            if (GA.horas_inicios[i].getHour() > GA.nowTime.getHour()) {//Comprobamos que las horas sean mayor que la actual
+                if (!alquileres.isEmpty()) {
+                    for (int j = 0; j < alquileres.size(); j++) {
+                        if (alquileres.get(j).p.num == tabla) {//Comprobamos que el numero de pista sea el mismo
+                            if (alquileres.get(j).horaInicio.equals(GA.horas_inicios[i])) {//Comprobamos que las horas sean las mismas
+                                modeloPistasAlquiladas.addRow(new Object[]{alquileres.get(j).dia, alquileres.get(j).horaInicio, alquileres.get(j).horaFin});
+                            }
+                        }
+                    }
                 }
             }
         }
-        return modeloPistasAlquiladas.get(tabla + 1);
+        return modeloPistasAlquiladas;
     }
 
     public ArrayList<Pista> gestionListarPistas() {
 
         try {
-            flujoObjSalida.writeUTF(Protocolo.LISTAR_PISTAS);
-            flujoObjSalida.writeObject(pistas);
+            flujo_salida.writeUTF(Protocolo.LISTAR_PISTAS);
+            //flujoObjSalida.writeObject(pistas);
             pistas = (ArrayList<Pista>) flujoObjEntrada.readObject();
-
         } catch (ClassNotFoundException e) {
             System.out.println("Error al obtener la clase al listar");
         } catch (IOException e) {
-            System.out.println("Error de SQL al listar");
+            System.out.println("Error de IO al listar pistas");
+            System.out.println(e.getMessage());
         }
         return pistas;
     }
 
     public void gestionInsertarPista(Pista pista) {
         try {
-            flujoObjSalida.writeUTF(Protocolo.INSERTAR_ALQUILER);
+            flujo_salida.writeUTF(0 + "");
             flujoObjSalida.writeObject(pista);
             boolean insertado = flujoObjEntrada.readBoolean();
             if (insertado) {
@@ -124,7 +145,7 @@ public class GestionPistas {
 
     public void gestionBorrarPista(int id) {
         try {
-            flujoObjSalida.writeUTF(Protocolo.BORRAR_ALQUILER);
+            flujo_salida.writeUTF(Protocolo.BORRAR_ALQUILER);
             flujoObjSalida.writeObject(id);
 
             if (flujoObjEntrada.readBoolean()) {
@@ -140,7 +161,7 @@ public class GestionPistas {
 
     public void gestionActualizarPista(Pista pista) {
         try {
-            flujoObjSalida.writeUTF(ACTUALIZAR_ALQUILER);
+            flujo_salida.writeUTF(0 + "");
             flujoObjSalida.writeObject(pista);
             flujoObjSalida.writeObject(pista.getId());
             boolean actualizado = flujoObjEntrada.readBoolean();
